@@ -69,11 +69,10 @@ public class Tank {
 	}
 	
 	public void render(Graphics2D ctx) {		
-		ctx.rotate(this.angle, ((int)this.x - 3) + Tank.WIDTH / 2, ((int)this.y + (Tank.HEIGHT / 7)) + Tank.HEIGHT / 2);
+		ctx.rotate(this.angle, ((int)this.x - 5) + Tank.WIDTH / 2, ((int)this.y + (Tank.HEIGHT / 7)) + Tank.HEIGHT / 2);
 
 		ctx.setColor(WanshotView.SHADOW);
-		Rectangle shadow = new Rectangle((int)this.x - 3, (int)this.y + (Tank.HEIGHT / 7), Tank.WIDTH, Tank.HEIGHT);
-		ctx.draw(shadow);
+		Rectangle shadow = new Rectangle((int)this.x - 5, (int)this.y + (Tank.HEIGHT / 7), Tank.WIDTH, Tank.HEIGHT);
 		ctx.fill(shadow);
 		
 		ctx.setTransform(WanshotView.oldTransform);
