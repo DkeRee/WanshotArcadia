@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public class Tank {
+public class Tank extends Parallelogram {
 	//TANK STATIC INFO
 	static final int WIDTH = 43;
 	static final int HEIGHT = 33;
@@ -33,6 +33,7 @@ public class Tank {
 		Color turretColor,
 		Color sideColor
 	) {
+		super((int)x, (int)y, Tank.WIDTH, Tank.HEIGHT, angle);
 		this.x = x;
 		this.y = y;
 		this.centerX = this.x + Tank.WIDTH / 2;
@@ -52,7 +53,21 @@ public class Tank {
 	//Player && Bot will update x and y directly, not caring for collisions
 	//This will update center x and deal with collisions seperately
 	
+	public void collideWithTile() {
+		for (int i = 0; i < WanshotModel.tiles.size(); i++) {
+			Tile tile = WanshotModel.tiles.get(i);
+						
+			//colliding with this tile
+			if (super.sat_parallelogram(tile)) {
+				this.x += super.getNormal().x * super.getCollisionDepth() / 2;
+				this.y += super.getNormal().y * super.getCollisionDepth() / 2;
+			}
+		}
+	}
+	
 	public void update() {
+		super.update((int)this.x, (int)this.y, this.angle);
+		
 		this.xInc = this.speed * Math.cos(this.angle) * WanshotModel.deltaTime;
 		this.yInc = this.speed * Math.sin(this.angle) * WanshotModel.deltaTime;
 		
@@ -65,7 +80,7 @@ public class Tank {
 		this.turretAngle %= 2 * Math.PI;
 		
 		//Collisions
-		//futureCollisions()
+		this.collideWithTile();
 	}
 	
 	public void render(Graphics2D ctx) {		

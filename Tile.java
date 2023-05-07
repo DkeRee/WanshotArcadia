@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public class Tile {
+public class Tile extends Parallelogram {
 	//TILE STATIC INFO
 	static final int WIDTH = 35;
 	static final int HEIGHT = 35;
@@ -39,6 +39,7 @@ public class Tile {
 	Splotch[] splotches = new Splotch[2];
 	
 	public Tile(int x, int y, boolean breakable) {
+		super(x, y, Tile.WIDTH, Tile.HEIGHT, 0);
 		this.x = x;
 		this.y = y;
 		this.breakable = breakable;
