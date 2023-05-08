@@ -38,7 +38,8 @@ public class Shell extends Parallelogram {
 	public boolean bounceLeft() {
 		double newDirection = Math.abs(Math.PI - this.angle) % (2 * Math.PI);
 		if (newDirection < Math.PI / 2 || newDirection > Math.PI * (3.0 / 2.0)) {
-			this.angle = Math.PI - this.angle;
+			this.angle = newDirection;
+			this.x += this.speed * Math.cos(this.angle) * WanshotModel.deltaTime;
 			return true;
 		}
 		
@@ -48,7 +49,8 @@ public class Shell extends Parallelogram {
 	public boolean bounceRight() {
 		double newDirection = Math.abs(Math.PI - this.angle) % (2 * Math.PI);
 		if (newDirection >= Math.PI / 2 || newDirection <= Math.PI * (3.0 / 2.0)) {
-			this.angle = Math.PI - this.angle;
+			this.angle = newDirection;
+			this.x += this.speed * Math.cos(this.angle) * WanshotModel.deltaTime;
 			return true;
 		}
 		
@@ -58,7 +60,8 @@ public class Shell extends Parallelogram {
 	public boolean bounceBottom() {
 		double newDirection = (2 * Math.PI - this.angle) % (2 * Math.PI);
 		if (newDirection < Math.PI) {
-			this.angle = 2 * Math.PI - this.angle;
+			this.angle = newDirection;
+			this.y += this.speed * Math.sin(this.angle) * WanshotModel.deltaTime;
 			return true;
 		}
 		
@@ -68,8 +71,8 @@ public class Shell extends Parallelogram {
 	public boolean bounceTop() {
 		double newDirection = (2 * Math.PI - this.angle) % (2 * Math.PI);
 		if (newDirection >= Math.PI) {
-			this.angle = 2 * Math.PI - this.angle;
-			this.angle %= 2 * Math.PI;
+			this.angle = newDirection;
+			this.y += this.speed * Math.sin(this.angle) * WanshotModel.deltaTime;
 			return true;
 		}
 		
@@ -96,13 +99,9 @@ public class Shell extends Parallelogram {
 				
 				if (crossWidth > crossHeight) {
 					if (crossWidth > -crossHeight) {
-						//bottom
+						//bottom						
 						if (!posYDir) {
 							bounced = this.bounceBottom();
-						}
-						
-						if (!bounced) {
-							bounced = this.bounceRight();
 						}
 					} else {
 						//right
