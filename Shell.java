@@ -1,5 +1,48 @@
 import java.awt.*;
 
+class MissleParticle extends Particle {
+	Color[] possibleColors = {Color.decode("#ED4245"), Color.decode("#FFA500"), Color.decode("#FFBF00")};	
+	
+	static final int side = 12;
+	int x;
+	int y;
+	int opacity = 100;
+	int speed = 400;
+	Color color = this.possibleColors[(int)(Math.random() * possibleColors.length)];
+	double angle = WanshotModel.degreesToRadians(Math.random() * 360);
+	
+	public MissleParticle(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+	
+	public void update() {
+		this.x += this.speed * Math.cos(this.angle) * WanshotModel.deltaTime;
+		this.y += this.speed * Math.sin(this.angle) * WanshotModel.deltaTime;
+		this.opacity -= 350 * WanshotModel.deltaTime;
+		
+		this.speed -= WanshotModel.deltaTime;
+		
+		if (this.opacity <= 0) {
+			super.delete = true;
+			return;
+		}
+		
+		this.color = new Color(this.color.getRed(), this.color.getGreen(), this.color.getBlue(), this.opacity);
+	}
+	
+	public void render(Graphics2D ctx) {
+		ctx.rotate(this.angle, this.x + MissleParticle.side / 2, this.y + MissleParticle.side / 2);
+		ctx.setColor(this.color);
+		
+		Rectangle p = new Rectangle(this.x, this.y, MissleParticle.side, MissleParticle.side);
+		ctx.draw(p);
+		ctx.fill(p);
+		
+		ctx.setTransform(WanshotView.oldTransform);
+	}
+}
+
 class HitParticle extends Particle {
 	Color[] possibleColors = {Color.decode("#ED4245"), Color.decode("#FFA500"), Color.decode("#FFBF00")};	
 	
@@ -76,16 +119,13 @@ public class Shell extends Parallelogram {
 	static final int WIDTH = 9;
 	static final int HEIGHT = 6;
 	static final int REGULAR_SHELL_SPEED = 250;
-	static final int MISSLE_SPEED = 600;
+	static final int MISSLE_SPEED = 700;
 	static final int ULTRA_MISSLE_SPEED = 500;
 	static final Color REGULAR_SHELL_COLOR = Color.decode("#D3D3D3");
 	static final Color MISSLE_COLOR = Color.decode("#DE522F");
 	static final Color ULTRA_MISSLE_COLOR = Color.decode("#FFBF00");
-	
-	final int FIRST_QUADRANT = 0;
-	final int SECOND_QUADRANT = 1;
-	final int THIRD_QUADRANT = 2;
-	final int FOURTH_QUADRANT = 3;
+	static final int MISSLE_PARTICLE_CAP = -2;
+	static final int ULTRA_MISSLE_PARTICLE_CAP = -1;
 	
 	//SHELL INSTANCE INFO
 	double x;
@@ -102,6 +142,8 @@ public class Shell extends Parallelogram {
 	int ricochet = 0;
 	int trailRate;
 	int trailRateCount = 0;
+	int particleCapCount = 0;
+	int particleCap;
 	Color color;
 	
 	public Shell(double x, double y, double angle, int speed, Tank tankRef) {
@@ -121,10 +163,12 @@ public class Shell extends Parallelogram {
 				break;
 			case Shell.MISSLE_SPEED:
 				this.color = Shell.MISSLE_COLOR;
+				this.particleCap = Shell.MISSLE_PARTICLE_CAP;
 				this.trailRate = -2;
 				break;
 			case Shell.ULTRA_MISSLE_SPEED:
 				this.color = Shell.ULTRA_MISSLE_COLOR;
+				this.particleCap = Shell.ULTRA_MISSLE_PARTICLE_CAP;
 				this.trailRate = -1;
 				break;
 		}
@@ -147,6 +191,7 @@ public class Shell extends Parallelogram {
 	public boolean bounceLeft() {
 		if (this.vX < 0) {
 			this.vX *= -1;
+			this.angle *= -1;
 			this.createHit();
 			return true;
 		}
@@ -157,6 +202,7 @@ public class Shell extends Parallelogram {
 	public boolean bounceRight() {
 		if (this.vX > 0) {
 			this.vX *= -1;
+			this.angle *= -1;
 			this.createHit();
 			return true;
 		}
@@ -167,6 +213,7 @@ public class Shell extends Parallelogram {
 	public boolean bounceBottom() {						
 		if (this.vY < 0) {
 			this.vY *= -1;
+			this.angle *= -1;
 			this.createHit();
 			return true;
 		}
@@ -177,6 +224,7 @@ public class Shell extends Parallelogram {
 	public boolean bounceTop() {				
 		if (this.vY > 0 ) {
 			this.vY *= -1;
+			this.angle *= -1;
 			this.createHit();
 			return true;
 		}
@@ -291,6 +339,15 @@ public class Shell extends Parallelogram {
 			} else {
 				this.trailRateCount = this.trailRate;
 				WanshotModel.particles.add(new ShellSmoke((int)this.centerX - 5, (int)this.centerY - 5));
+			}
+			
+			if (this.speed != Shell.REGULAR_SHELL_SPEED) {
+				if (this.particleCapCount < 0) {
+					this.particleCapCount++;
+				} else {
+					this.particleCapCount = this.particleCap;
+					WanshotModel.particles.add(new MissleParticle((int)this.x, (int)this.y));
+				}
 			}
 			
 			//Collisions

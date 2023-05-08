@@ -26,7 +26,7 @@ public class Player extends Tank {
 	}
 	
 	public void shoot() {
-		super.shoot(Shell.ULTRA_MISSLE_SPEED);
+		super.shoot(Shell.REGULAR_SHELL_SPEED);
 	}
 	
 	public void update() {
