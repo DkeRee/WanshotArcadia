@@ -242,14 +242,13 @@ public class Shell extends Parallelogram {
 				double crossWidth = meanWidth * dy;
 				double crossHeight = meanHeight * dx;
 				
-				boolean posXDir = Math.cos(this.angle) >= 0;
-				boolean posYDir = Math.sin(this.angle) >= 0;
-				
 				if (crossWidth > crossHeight) {
 					//bottom						
 					if (!tile.info.bottomNeighboor) {
 						bounced = this.bounceBottom();
-					} else if (!tile.info.leftNeighboor) {
+					}
+					
+					if (!tile.info.leftNeighboor) {
 						//right
 						bounced = this.bounceRight();
 					}
@@ -257,7 +256,9 @@ public class Shell extends Parallelogram {
 					//left
 					if (!tile.info.rightNeighboor) {
 						bounced = this.bounceLeft();
-					} else if (!tile.info.topNeighboor) {
+					}
+					
+					if (!tile.info.topNeighboor) {
 						//top
 						bounced = this.bounceTop();
 					}
@@ -296,6 +297,12 @@ public class Shell extends Parallelogram {
 			this.shellWithTile();
 			this.shellWithShell();
 			this.shellWithTank();
+			
+			//remove escapees
+			if (this.x < 0 || this.x > WanshotModel.WIDTH || this.y < 0 || this.y > WanshotModel.HEIGHT) {
+				this.delete = true;
+				this.tankRef.shellShot--;
+			}
 			
 			//Mark shells for deletion
 			switch (this.speed) {
