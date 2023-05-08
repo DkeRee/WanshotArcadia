@@ -28,7 +28,7 @@ public class WanshotView extends JPanel {
 		g.fillRect(0, 0, WanshotModel.WIDTH, WanshotModel.HEIGHT);
 		
 		WanshotView.oldTransform = ctx.getTransform();
-				
+
 		//Render Shadows
 		for (int i = 0; i < WanshotModel.tiles.size(); i++) {
 			WanshotModel.tiles.get(i).renderShadow(ctx);

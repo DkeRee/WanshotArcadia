@@ -82,6 +82,8 @@ public class Shell extends Parallelogram {
 			
 			//initial collision detection
 			if (super.sat_parallelogram(tile)) {
+				boolean bounced = false;
+				
 				double dx = this.centerX - tile.centerX;
 				double dy = this.centerY - tile.centerY;
 				double meanWidth = (Shell.WIDTH + Tile.WIDTH) / 2;
@@ -92,13 +94,15 @@ public class Shell extends Parallelogram {
 				boolean posXDir = Math.cos(this.angle) >= 0;
 				boolean posYDir = Math.sin(this.angle) >= 0;
 				
-				boolean bounced = false;
-
 				if (crossWidth > crossHeight) {
-					if (crossWidth > -crossHeight + 100) {
+					if (crossWidth > -crossHeight) {
 						//bottom
 						if (!posYDir) {
 							bounced = this.bounceBottom();
+						}
+						
+						if (!bounced) {
+							bounced = this.bounceRight();
 						}
 					} else {
 						//right
