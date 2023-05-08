@@ -37,16 +37,18 @@ public class Tile extends Parallelogram {
 	int centerX;
 	int centerY;
 	boolean breakable;
+	TileInfo info;
 	Color color;
 	Splotch[] splotches = new Splotch[2];
 	
-	public Tile(int x, int y, boolean breakable) {
+	public Tile(int x, int y, boolean breakable, TileInfo info) {
 		super(x, y, Tile.WIDTH, Tile.HEIGHT, 0);
 		this.x = x;
 		this.y = y;
 		this.centerX = this.x + Tile.WIDTH / 2;
 		this.centerY = this.y + Tile.HEIGHT / 2;
 		this.breakable = breakable;
+		this.info = info;
 		
 		if (!this.breakable) {
 			this.color = Color.decode("#967748");
@@ -58,7 +60,7 @@ public class Tile extends Parallelogram {
 			this.splotches[i] = new Splotch(this.x, this.y, this.breakable);
 		}
 	}
-	
+
 	public void renderShadow(Graphics2D ctx) {
 		ctx.setColor(WanshotView.SHADOW);
 		Rectangle shadow = new Rectangle(this.x - 8, this.y + (Tile.HEIGHT / 5), Tile.WIDTH, Tile.HEIGHT);

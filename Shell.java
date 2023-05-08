@@ -76,11 +76,22 @@ public class Shell extends Parallelogram {
 	static final int WIDTH = 9;
 	static final int HEIGHT = 6;
 	static final int REGULAR_SHELL_SPEED = 250;
+	static final int MISSLE_SPEED = 600;
+	static final int ULTRA_MISSLE_SPEED = 500;
 	static final Color REGULAR_SHELL_COLOR = Color.decode("#D3D3D3");
+	static final Color MISSLE_COLOR = Color.decode("#DE522F");
+	static final Color ULTRA_MISSLE_COLOR = Color.decode("#FFBF00");
+	
+	final int FIRST_QUADRANT = 0;
+	final int SECOND_QUADRANT = 1;
+	final int THIRD_QUADRANT = 2;
+	final int FOURTH_QUADRANT = 3;
 	
 	//SHELL INSTANCE INFO
 	double x;
 	double y;
+	double vX;
+	double vY;
 	double centerX;
 	double centerY;
 	double angle;
@@ -97,6 +108,8 @@ public class Shell extends Parallelogram {
 		super((int)x, (int)y, Shell.WIDTH, Shell.HEIGHT, angle);
 		this.x = x;
 		this.y = y;
+		this.vX = speed * Math.cos(angle) * WanshotModel.deltaTime;
+		this.vY = speed * Math.sin(angle) * WanshotModel.deltaTime;
 		this.angle = angle;
 		this.speed = speed;
 		this.tankRef = tankRef;
@@ -105,6 +118,14 @@ public class Shell extends Parallelogram {
 			case Shell.REGULAR_SHELL_SPEED:
 				this.color = Shell.REGULAR_SHELL_COLOR;
 				this.trailRate = -5;
+				break;
+			case Shell.MISSLE_SPEED:
+				this.color = Shell.MISSLE_COLOR;
+				this.trailRate = -2;
+				break;
+			case Shell.ULTRA_MISSLE_SPEED:
+				this.color = Shell.ULTRA_MISSLE_COLOR;
+				this.trailRate = -1;
 				break;
 		}
 		
@@ -124,10 +145,9 @@ public class Shell extends Parallelogram {
 	}
 	
 	public boolean bounceLeft() {
-		double newDirection = Math.abs(Math.PI - this.angle) % (2 * Math.PI);
-		if (newDirection < Math.PI / 2 || newDirection > Math.PI * (3.0 / 2.0)) {
-			this.angle = newDirection;
-			this.x += this.speed * Math.cos(this.angle) * WanshotModel.deltaTime;
+		System.out.println("asdfd");
+		if (this.vX < 0) {
+			this.vX *= -1;
 			this.createHit();
 			return true;
 		}
@@ -136,10 +156,8 @@ public class Shell extends Parallelogram {
 	}
 	
 	public boolean bounceRight() {
-		double newDirection = Math.abs(Math.PI - this.angle) % (2 * Math.PI);
-		if (newDirection >= Math.PI / 2 || newDirection <= Math.PI * (3.0 / 2.0)) {
-			this.angle = newDirection;
-			this.x += this.speed * Math.cos(this.angle) * WanshotModel.deltaTime;
+		if (this.vX > 0) {
+			this.vX *= -1;
 			this.createHit();
 			return true;
 		}
@@ -147,11 +165,9 @@ public class Shell extends Parallelogram {
 		return false;
 	}
 	
-	public boolean bounceBottom() {
-		double newDirection = (2 * Math.PI - this.angle) % (2 * Math.PI);
-		if (newDirection < Math.PI) {
-			this.angle = newDirection;
-			this.y += this.speed * Math.sin(this.angle) * WanshotModel.deltaTime;
+	public boolean bounceBottom() {						
+		if (this.vY < 0) {
+			this.vY *= -1;
 			this.createHit();
 			return true;
 		}
@@ -159,18 +175,16 @@ public class Shell extends Parallelogram {
 		return false;
 	}
 	
-	public boolean bounceTop() {
-		double newDirection = (2 * Math.PI - this.angle) % (2 * Math.PI);
-		if (newDirection >= Math.PI) {
-			this.angle = newDirection;
-			this.y += this.speed * Math.sin(this.angle) * WanshotModel.deltaTime;
+	public boolean bounceTop() {				
+		if (this.vY > 0 ) {
+			this.vY *= -1;
 			this.createHit();
 			return true;
 		}
 		
 		return false;
 	}
-	
+
 	public void shellWithTank() {
 		for (int i = 0; i < WanshotModel.tanks.size(); i++) {
 			Tank tank = WanshotModel.tanks.get(i);
@@ -233,28 +247,20 @@ public class Shell extends Parallelogram {
 				boolean posYDir = Math.sin(this.angle) >= 0;
 				
 				if (crossWidth > crossHeight) {
-					if (crossWidth > -crossHeight) {
-						//bottom						
-						if (!posYDir) {
-							bounced = this.bounceBottom();
-						}
-					} else {
+					//bottom						
+					if (!tile.info.bottomNeighboor) {
+						bounced = this.bounceBottom();
+					} else if (!tile.info.leftNeighboor) {
 						//right
-						if (posXDir) {
-							bounced = this.bounceRight();
-						}
+						bounced = this.bounceRight();
 					}
 				} else {
-					if (crossWidth > -crossHeight) {
-						//left
-						if (!posXDir) {
-							bounced = this.bounceLeft();
-						}
-					} else {
+					//left
+					if (!tile.info.rightNeighboor) {
+						bounced = this.bounceLeft();
+					} else if (!tile.info.topNeighboor) {
 						//top
-						if (posYDir) {
-							bounced = this.bounceTop();
-						}
+						bounced = this.bounceTop();
 					}
 				}
 				
@@ -273,8 +279,8 @@ public class Shell extends Parallelogram {
 	public void update() {
 		if (WanshotModel.isPlayerAlive()) {
 			super.update((int)this.x, (int)this.y, this.angle);
-			this.x += this.speed * Math.cos(this.angle) * WanshotModel.deltaTime;
-			this.y += this.speed * Math.sin(this.angle) * WanshotModel.deltaTime;
+			this.x += this.vX;
+			this.y += this.vY;
 			
 			this.centerX = this.x + Shell.WIDTH / 2;
 			this.centerY = this.y + Shell.HEIGHT / 2;
@@ -296,6 +302,18 @@ public class Shell extends Parallelogram {
 			switch (this.speed) {
 				case Shell.REGULAR_SHELL_SPEED:
 					if (this.ricochet >= 2) {
+						this.delete = true;
+						this.tankRef.shellShot--;
+					}
+					break;
+				case Shell.MISSLE_SPEED:
+					if (this.ricochet >= 1) {
+						this.delete = true;
+						this.tankRef.shellShot--;
+					}
+					break;
+				case Shell.ULTRA_MISSLE_SPEED:
+					if (this.ricochet >= 3) {
 						this.delete = true;
 						this.tankRef.shellShot--;
 					}

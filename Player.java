@@ -26,7 +26,7 @@ public class Player extends Tank {
 	}
 	
 	public void shoot() {
-		super.shoot(Shell.REGULAR_SHELL_SPEED);
+		super.shoot(Shell.ULTRA_MISSLE_SPEED);
 	}
 	
 	public void update() {
@@ -49,8 +49,13 @@ public class Player extends Tank {
 			super.angle += super.rotationInc;
 		}
 		
-		super.turretAngle = Math.atan2((double)this.mouseY - super.centerY, (double)this.mouseX - super.centerX);
-
+		double turretAngle = Math.atan2((double)this.mouseY - super.centerY, (double)this.mouseX - super.centerX);
+		if (turretAngle < 0) {
+			turretAngle = 2 * Math.PI - Math.abs(turretAngle);
+		}
+				
+		super.turretAngle = turretAngle;
+		
 		//update tank body
 		super.update();
 	}

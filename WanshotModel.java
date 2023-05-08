@@ -28,39 +28,43 @@ public class WanshotModel {
 	}
 	
 	public void initTiles() {
+		TileInfo info = new TileInfo(true, true, true, false);
 		int x = 0;
 		int y = 0;
 		
 		//top border
 		for (int i = 0; i < WanshotModel.WIDTH / Tile.WIDTH; i++) {
-			tiles.add(new Tile(x, y, false));
+			tiles.add(new Tile(x, y, false, info));
 			x += Tile.WIDTH;
 		}
 		
 		//bottom border
+		info = new TileInfo(false, true, true, true);
 		x = 0;
 		y = WanshotModel.HEIGHT - Tile.HEIGHT;
 		
 		for (int i = 0; i < WanshotModel.WIDTH / Tile.WIDTH; i++) {
-			tiles.add(new Tile(x, y, false));
+			tiles.add(new Tile(x, y, false, info));
 			x += Tile.WIDTH;
 		}
 		
 		//left border
+		info = new TileInfo(true, false, true, true);
 		x = 0;
 		y = Tile.HEIGHT;
 		
 		for (int i = 0; i < (WanshotModel.HEIGHT / Tile.HEIGHT) - 1; i++) {
-			tiles.add(new Tile(x, y, false));
+			tiles.add(new Tile(x, y, false, info));
 			y += Tile.HEIGHT;
 		}
 		
 		//right border
+		info = new TileInfo(true, true, false, true);
 		x = WanshotModel.WIDTH - Tile.WIDTH;
 		y = Tile.HEIGHT;
-		
+				
 		for (int i = 0; i < (WanshotModel.HEIGHT / Tile.HEIGHT) - 1; i++) {
-			tiles.add(new Tile(x, y, false));
+			tiles.add(new Tile(x, y, false, info));
 			y += Tile.HEIGHT;
 		}
 	}
