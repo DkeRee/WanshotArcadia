@@ -1,5 +1,46 @@
 import java.awt.*;
 
+class HitParticle extends Particle {
+	Color[] possibleColors = {Color.decode("#ED4245"), Color.decode("#FFA500"), Color.decode("#FFBF00")};	
+	
+	static final int side = 7;
+	int x;
+	int y;
+	int opacity = 100;
+	int speed = 350;
+	Color color = this.possibleColors[(int)(Math.random() * possibleColors.length)];
+	double angle = WanshotModel.degreesToRadians(Math.random() * 360);
+
+	public HitParticle(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+	
+	public void update() {
+		this.x += this.speed * Math.cos(this.angle) * WanshotModel.deltaTime;
+		this.y += this.speed * Math.sin(this.angle) * WanshotModel.deltaTime;
+		this.opacity -= 350 * WanshotModel.deltaTime;
+		
+		if (this.opacity <= 0) {
+			super.delete = true;
+			return;
+		}
+		
+		this.color = new Color(this.color.getRed(), this.color.getGreen(), this.color.getBlue(), this.opacity);
+	}
+	
+	public void render(Graphics2D ctx) {
+		ctx.rotate(this.angle, this.x + HitParticle.side / 2, this.y + HitParticle.side / 2);
+		ctx.setColor(this.color);
+		
+		Rectangle p = new Rectangle(this.x, this.y, HitParticle.side, HitParticle.side);
+		ctx.draw(p);
+		ctx.fill(p);
+		
+		ctx.setTransform(WanshotView.oldTransform);
+	}
+}
+
 class ShellSmoke extends Particle {
 	int x;
 	int y;
@@ -13,7 +54,7 @@ class ShellSmoke extends Particle {
 	}
 	
 	public void update() {
-		this.radius += 115 * WanshotModel.deltaTime;
+		this.radius += 125 * WanshotModel.deltaTime;
 		this.opacity -= 260 * WanshotModel.deltaTime;
 		
 		if (opacity <= 0) {
@@ -66,6 +107,20 @@ public class Shell extends Parallelogram {
 				this.trailRate = -5;
 				break;
 		}
+		
+		this.createHit((int)x, (int)y);
+	}
+	
+	public void createHit() {
+		this.createHit((int)this.centerX, (int)this.centerY);
+	}
+	
+	public void createHit(int x, int y) {
+		//create 50 hit particles
+		for (int i = 0; i < 50; i++) {
+			HitParticle p = new HitParticle(x, y);
+			WanshotModel.particles.add(p);
+		}
 	}
 	
 	public boolean bounceLeft() {
@@ -73,6 +128,7 @@ public class Shell extends Parallelogram {
 		if (newDirection < Math.PI / 2 || newDirection > Math.PI * (3.0 / 2.0)) {
 			this.angle = newDirection;
 			this.x += this.speed * Math.cos(this.angle) * WanshotModel.deltaTime;
+			this.createHit();
 			return true;
 		}
 		
@@ -84,6 +140,7 @@ public class Shell extends Parallelogram {
 		if (newDirection >= Math.PI / 2 || newDirection <= Math.PI * (3.0 / 2.0)) {
 			this.angle = newDirection;
 			this.x += this.speed * Math.cos(this.angle) * WanshotModel.deltaTime;
+			this.createHit();
 			return true;
 		}
 		
@@ -95,6 +152,7 @@ public class Shell extends Parallelogram {
 		if (newDirection < Math.PI) {
 			this.angle = newDirection;
 			this.y += this.speed * Math.sin(this.angle) * WanshotModel.deltaTime;
+			this.createHit();
 			return true;
 		}
 		
@@ -106,6 +164,7 @@ public class Shell extends Parallelogram {
 		if (newDirection >= Math.PI) {
 			this.angle = newDirection;
 			this.y += this.speed * Math.sin(this.angle) * WanshotModel.deltaTime;
+			this.createHit();
 			return true;
 		}
 		
