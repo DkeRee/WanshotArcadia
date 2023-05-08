@@ -145,7 +145,6 @@ public class Shell extends Parallelogram {
 	}
 	
 	public boolean bounceLeft() {
-		System.out.println("asdfd");
 		if (this.vX < 0) {
 			this.vX *= -1;
 			this.createHit();
