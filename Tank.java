@@ -127,6 +127,23 @@ public class Tank extends Parallelogram {
 		}
 	}
 	
+	public void tankWithTank() {
+		for (int i = 0; i < WanshotModel.tanks.size(); i++) {
+			Tank tank = WanshotModel.tanks.get(i);
+			
+			//colliding with tank not self
+			if (System.identityHashCode(this) != System.identityHashCode(tank)) {
+				if (super.sat_parallelogram(tank)) {
+					this.x += super.getNormal().x * super.getCollisionDepth() / 2;
+					this.y += super.getNormal().y * super.getCollisionDepth() / 2;
+					
+					tank.x -= super.getNormal().x * super.getCollisionDepth() / 2;
+					tank.y -= super.getNormal().y * super.getCollisionDepth() / 2;
+				}
+			}
+		}
+	}
+	
 	public void createExplosion() {
 		for (int i = 0; i < 100; i++) {
 			TankParticle p = new TankParticle((int)this.x, (int)this.y, this.color);
@@ -173,6 +190,7 @@ public class Tank extends Parallelogram {
 		
 		//Collisions
 		this.tankWithTile();
+		this.tankWithTank();
 	}
 	
 	public void render(Graphics2D ctx) {		
