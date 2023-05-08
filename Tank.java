@@ -1,5 +1,54 @@
 import java.awt.*;
 
+class TankParticle extends Particle {
+	Color[] possibleColors = {Color.decode("#ED4245"), Color.decode("#FFA500"), Color.decode("#808080")};
+	
+	static final int side = 20;
+	int x;
+	int y;
+	double angle = WanshotModel.degreesToRadians(Math.random() * 360);
+	int opacity = 100;
+	int speed = 300;
+	Color color;
+	
+	public TankParticle(int x, int y, Color tankColor) {
+		this.x = x;
+		this.y = y;
+		
+		int ind = (int)(Math.random() * (this.possibleColors.length + 1));
+				
+		if (ind > 2) {
+			this.color = tankColor;
+		} else {
+			this.color = this.possibleColors[ind];
+		}
+	}
+	
+	public void update() {
+		this.x += this.speed * Math.cos(this.angle) * WanshotModel.deltaTime;
+		this.y += this.speed * Math.sin(this.angle) * WanshotModel.deltaTime;
+		this.opacity -= 300 * WanshotModel.deltaTime;
+		
+		if (this.opacity <= 0) {
+			super.delete = true;
+			return;
+		}
+		
+		this.color = new Color(this.color.getRed(), this.color.getGreen(), this.color.getBlue(), this.opacity);
+	}
+	
+	public void render(Graphics2D ctx) {
+		ctx.rotate(this.angle, this.x + TankParticle.side / 2, this.y + TankParticle.side / 2);
+		ctx.setColor(this.color);
+		
+		Rectangle p = new Rectangle(this.x, this.y, TankParticle.side, TankParticle.side);
+		ctx.draw(p);
+		ctx.fill(p);
+		
+		ctx.setTransform(WanshotView.oldTransform);
+	}
+}
+
 public class Tank extends Parallelogram {
 	//TANK STATIC INFO
 	static final int WIDTH = 43;
@@ -19,6 +68,7 @@ public class Tank extends Parallelogram {
 	double yInc;
 	double rotationInc;
 	double speed;
+	boolean delete = false;
 	int stun;
 	int stunCount = 0;
 	int shellCap;
@@ -74,6 +124,13 @@ public class Tank extends Parallelogram {
 				this.x += super.getNormal().x * super.getCollisionDepth() / 2;
 				this.y += super.getNormal().y * super.getCollisionDepth() / 2;
 			}
+		}
+	}
+	
+	public void createExplosion() {
+		for (int i = 0; i < 100; i++) {
+			TankParticle p = new TankParticle((int)this.x, (int)this.y, this.color);
+			WanshotModel.particles.add(p);
 		}
 	}
 	

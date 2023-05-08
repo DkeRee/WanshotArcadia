@@ -65,6 +65,12 @@ public class WanshotModel {
 		}
 	}
 	
+	public void reset() {
+		WanshotModel.tanks.clear();
+		WanshotModel.shells.clear();
+		
+		tanks.add(new Player(WanshotModel.WIDTH / 2, WanshotModel.HEIGHT / 2));
+	}
 	
 	public void update() {
 		for (int i = 0; i < WanshotModel.particles.size(); i++) {
@@ -81,7 +87,16 @@ public class WanshotModel {
 		}
 		
 		for (int i = 0; i < WanshotModel.tanks.size(); i++) {
-			WanshotModel.tanks.get(i).update();
+			Tank tank = WanshotModel.tanks.get(i);
+			
+			if (tank.delete) {
+				WanshotModel.tanks.remove(i);
+				i--;
+				
+				continue;
+			}
+
+			tank.update();
 		}
 		
 		for (int i = 0; i < WanshotModel.shells.size(); i++) {
@@ -96,5 +111,8 @@ public class WanshotModel {
 			
 			shell.update();
 		}
+		
+		if (!WanshotModel.isPlayerAlive())
+			this.reset();
 	}
 }

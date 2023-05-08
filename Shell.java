@@ -171,6 +171,30 @@ public class Shell extends Parallelogram {
 		return false;
 	}
 	
+	public void shellWithTank() {
+		for (int i = 0; i < WanshotModel.tanks.size(); i++) {
+			Tank tank = WanshotModel.tanks.get(i);
+			
+			//wait for shell to leave contact of tank then remove peace mode
+			if (this.peace) {
+				if (!super.sat_parallelogram(tank) && System.identityHashCode(this.tankRef) == System.identityHashCode(tank)) {
+					this.peace = false;
+					return;
+				}
+			}
+			
+			if (super.sat_parallelogram(tank) && !this.peace) {
+				this.delete = true;
+				this.createHit();
+				this.tankRef.shellShot--;
+				
+				tank.createExplosion();
+				tank.delete = true;
+				break;
+			}
+		}
+	}
+	
 	public void shellWithShell() {
 		for (int i = 0; i < WanshotModel.shells.size(); i++) {
 			Shell shell = WanshotModel.shells.get(i);
@@ -266,6 +290,7 @@ public class Shell extends Parallelogram {
 			//Collisions
 			this.shellWithTile();
 			this.shellWithShell();
+			this.shellWithTank();
 			
 			//Mark shells for deletion
 			switch (this.speed) {
