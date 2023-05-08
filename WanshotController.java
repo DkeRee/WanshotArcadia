@@ -21,16 +21,16 @@ public class WanshotController implements MouseListener, MouseMotionListener, Ke
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		if (this.model.tanks.size() > 0 && this.model.tanks.get(0) instanceof Player) {
-			((Player)this.model.tanks.get(0)).updateKey(e.getKeyCode(), true);
+		if (WanshotModel.isPlayerAlive()) {
+			((Player)WanshotModel.tanks.get(0)).updateKey(e.getKeyCode(), true);
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		if (this.model.tanks.size() > 0 && this.model.tanks.get(0) instanceof Player) {
-			((Player)this.model.tanks.get(0)).updateKey(e.getKeyCode(), false);
+		if (WanshotModel.isPlayerAlive()) {
+			((Player)WanshotModel.tanks.get(0)).updateKey(e.getKeyCode(), false);
 		}
 	}
 
@@ -43,8 +43,8 @@ public class WanshotController implements MouseListener, MouseMotionListener, Ke
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		// TODO Auto-generated method stub
-		if (this.model.tanks.size() > 0 && this.model.tanks.get(0) instanceof Player) {
-			((Player)this.model.tanks.get(0)).updateMouseCoords(e.getX(), e.getY());
+		if (WanshotModel.isPlayerAlive()) {
+			((Player)WanshotModel.tanks.get(0)).updateMouseCoords(e.getX(), e.getY());
 		}
 	}
 
@@ -57,7 +57,9 @@ public class WanshotController implements MouseListener, MouseMotionListener, Ke
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+		if (WanshotModel.isPlayerAlive()) {
+			((Player)WanshotModel.tanks.get(0)).shoot();
+		}
 	}
 
 	@Override

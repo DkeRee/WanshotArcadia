@@ -53,7 +53,7 @@ public class Tank extends Parallelogram {
 	//Player && Bot will update x and y directly, not caring for collisions
 	//This will update center x and deal with collisions seperately
 	
-	public void collideWithTile() {
+	public void tankWithTile() {
 		for (int i = 0; i < WanshotModel.tiles.size(); i++) {
 			Tile tile = WanshotModel.tiles.get(i);
 						
@@ -63,6 +63,14 @@ public class Tank extends Parallelogram {
 				this.y += super.getNormal().y * super.getCollisionDepth() / 2;
 			}
 		}
+	}
+	
+	public void shoot(int shellType) {
+		double initialBoostX = (20 * Math.cos(this.turretAngle));
+		double initialBoostY = (20 * Math.sin(this.turretAngle));
+		Shell shell = new Shell(this.centerX - Shell.WIDTH / 2 + initialBoostX, this.centerY - Shell.HEIGHT / 2 + initialBoostY, this.turretAngle, shellType);
+	
+		WanshotModel.shells.add(shell);
 	}
 	
 	public void update() {
@@ -80,7 +88,7 @@ public class Tank extends Parallelogram {
 		this.turretAngle %= 2 * Math.PI;
 		
 		//Collisions
-		this.collideWithTile();
+		this.tankWithTile();
 	}
 	
 	public void render(Graphics2D ctx) {		

@@ -15,10 +15,15 @@ public class WanshotModel {
 	//CONTENT
 	static ArrayList<Tank> tanks = new ArrayList<Tank>();
 	static ArrayList<Tile> tiles = new ArrayList<Tile>();
+	static ArrayList<Shell> shells = new ArrayList<Shell>();
 	
 	public WanshotModel() {
 		tanks.add(new Player(WanshotModel.WIDTH / 2, WanshotModel.HEIGHT / 2));
 		this.initTiles();
+	}
+	
+	public static boolean isPlayerAlive() {
+		return WanshotModel.tanks.size() > 0 && WanshotModel.tanks.get(0) instanceof Player;
 	}
 	
 	public void initTiles() {
@@ -63,6 +68,19 @@ public class WanshotModel {
 	public void update() {
 		for (int i = 0; i < WanshotModel.tanks.size(); i++) {
 			WanshotModel.tanks.get(i).update();
+		}
+		
+		for (int i = 0; i < WanshotModel.shells.size(); i++) {
+			Shell shell = WanshotModel.shells.get(i);
+			
+			if (shell.delete) {
+				WanshotModel.shells.remove(i);
+				
+				i--;
+				continue;
+			}
+			
+			shell.update();
 		}
 	}
 }

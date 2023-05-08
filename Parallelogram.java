@@ -216,9 +216,7 @@ public class Parallelogram {
 	public boolean sat_parallelogram(Parallelogram other) {
 		//set up perpendicular edge vectors
 		ArrayList<Point> perpEdgeVectors = new ArrayList<Point>();
-		
-		//System.out.println(this.vertices);
-		
+				
 		for (int i = 0; i < this.edgeVectors.size(); i++) {
 			Point v = this.edgeVectors.get(i);
 			perpEdgeVectors.add(new Point(-v.y, v.x));

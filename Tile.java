@@ -34,6 +34,8 @@ public class Tile extends Parallelogram {
 	
 	int x;
 	int y;
+	int centerX;
+	int centerY;
 	boolean breakable;
 	Color color;
 	Splotch[] splotches = new Splotch[2];
@@ -42,6 +44,8 @@ public class Tile extends Parallelogram {
 		super(x, y, Tile.WIDTH, Tile.HEIGHT, 0);
 		this.x = x;
 		this.y = y;
+		this.centerX = this.x + Tile.WIDTH / 2;
+		this.centerY = this.y + Tile.HEIGHT / 2;
 		this.breakable = breakable;
 		
 		if (!this.breakable) {

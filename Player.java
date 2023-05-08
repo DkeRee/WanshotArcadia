@@ -22,6 +22,10 @@ public class Player extends Tank {
 		);
 	}
 	
+	public void shoot() {
+		super.shoot(Shell.REGULAR_SHELL_SPEED);
+	}
+	
 	public void update() {
 		//update based only x/y coords + rotation based off of input
 		if (W) {
