@@ -16,6 +16,9 @@ public class Player extends Tank {
 			0,
 			100,
 			WanshotModel.degreesToRadians(180),
+			-5,
+			5,
+			-3,
 			Color.decode("#224ACF"),
 			Color.decode("#1E42B8"),
 			Color.decode("#0101BA")

@@ -14,17 +14,19 @@ public class Shell extends Parallelogram {
 	double centerY;
 	double angle;
 	int speed;
+	Tank tankRef;
 	boolean delete = false;
 	boolean peace = true;
 	int ricochet = 0;
 	Color color;
 	
-	public Shell(double x, double y, double angle, int speed) {
+	public Shell(double x, double y, double angle, int speed, Tank tankRef) {
 		super((int)x, (int)y, Shell.WIDTH, Shell.HEIGHT, angle);
 		this.x = x;
 		this.y = y;
 		this.angle = angle;
 		this.speed = speed;
+		this.tankRef = tankRef;
 		
 		switch (speed) {
 			case Shell.REGULAR_SHELL_SPEED:
@@ -147,6 +149,7 @@ public class Shell extends Parallelogram {
 				case Shell.REGULAR_SHELL_SPEED:
 					if (this.ricochet >= 2) {
 						this.delete = true;
+						this.tankRef.shellShot--;
 					}
 					break;
 			}

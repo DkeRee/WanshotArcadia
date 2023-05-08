@@ -19,6 +19,12 @@ public class Tank extends Parallelogram {
 	double yInc;
 	double rotationInc;
 	double speed;
+	int stun;
+	int stunCount = 0;
+	int shellCap;
+	int shellShot = 0;
+	int shellCooldown;
+	int shellCooldownCount = 0;
 	Color color;
 	Color turretColor;
 	Color sideColor;
@@ -29,6 +35,9 @@ public class Tank extends Parallelogram {
 		double angle,
 		double speed,
 		double rotationSpeed,
+		int stun,
+		int shellCap,
+		int shellCooldown,
 		Color color,
 		Color turretColor,
 		Color sideColor
@@ -42,6 +51,9 @@ public class Tank extends Parallelogram {
 		this.turretAngle = angle;
 		this.speed = speed;
 		this.rotationInc = rotationSpeed * WanshotModel.deltaTime;
+		this.stun = stun;
+		this.shellCap = shellCap;
+		this.shellCooldown = shellCooldown;
 		this.color = color;
 		this.turretColor = turretColor;
 		this.sideColor = sideColor;
@@ -66,18 +78,33 @@ public class Tank extends Parallelogram {
 	}
 	
 	public void shoot(int shellType) {
-		double initialBoostX = (20 * Math.cos(this.turretAngle));
-		double initialBoostY = (20 * Math.sin(this.turretAngle));
-		Shell shell = new Shell(this.centerX - Shell.WIDTH / 2 + initialBoostX, this.centerY - Shell.HEIGHT / 2 + initialBoostY, this.turretAngle, shellType);
-	
-		WanshotModel.shells.add(shell);
+		if (this.shellShot < this.shellCap && this.shellCooldownCount == 0) {
+			double initialBoostX = (20 * Math.cos(this.turretAngle));
+			double initialBoostY = (20 * Math.sin(this.turretAngle));
+			Shell shell = new Shell(this.centerX - Shell.WIDTH / 2 + initialBoostX, this.centerY - Shell.HEIGHT / 2 + initialBoostY, this.turretAngle, shellType, this);
+		
+			WanshotModel.shells.add(shell);
+			this.stunCount = this.stun;
+			this.shellCooldownCount = this.shellCooldown;
+			this.shellShot++;	
+		}
 	}
 	
 	public void update() {
 		super.update((int)this.x, (int)this.y, this.angle);
 		
-		this.xInc = this.speed * Math.cos(this.angle) * WanshotModel.deltaTime;
-		this.yInc = this.speed * Math.sin(this.angle) * WanshotModel.deltaTime;
+		if (this.shellCooldownCount < 0) {
+			this.shellCooldownCount++;
+		}
+		
+		if (this.stunCount < 0) {
+			this.xInc = 0;
+			this.yInc = 0;
+			this.stunCount++;
+		} else {
+			this.xInc = this.speed * Math.cos(this.angle) * WanshotModel.deltaTime;
+			this.yInc = this.speed * Math.sin(this.angle) * WanshotModel.deltaTime;	
+		}
 		
 		//Update Center
 		this.centerX = this.x + Tank.WIDTH / 2;
