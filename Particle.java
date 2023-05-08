@@ -1,4 +1,11 @@
-public interface Particle {
-	void update();
-	void render();
+import java.awt.*;
+
+public abstract class Particle {
+	boolean delete = false;
+	void update() {
+		
+	}
+	void render(Graphics2D ctx) {
+		
+	}
 }

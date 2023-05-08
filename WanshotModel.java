@@ -16,6 +16,7 @@ public class WanshotModel {
 	static ArrayList<Tank> tanks = new ArrayList<Tank>();
 	static ArrayList<Tile> tiles = new ArrayList<Tile>();
 	static ArrayList<Shell> shells = new ArrayList<Shell>();
+	static ArrayList<Particle> particles = new ArrayList<Particle>();
 	
 	public WanshotModel() {
 		tanks.add(new Player(WanshotModel.WIDTH / 2, WanshotModel.HEIGHT / 2));
@@ -66,6 +67,19 @@ public class WanshotModel {
 	
 	
 	public void update() {
+		for (int i = 0; i < WanshotModel.particles.size(); i++) {
+			Particle particle = WanshotModel.particles.get(i);
+			
+			if (particle.delete) {
+				WanshotModel.particles.remove(i);
+				i--;
+				
+				continue;
+			}
+			
+			particle.update();
+		}
+		
 		for (int i = 0; i < WanshotModel.tanks.size(); i++) {
 			WanshotModel.tanks.get(i).update();
 		}
@@ -75,8 +89,8 @@ public class WanshotModel {
 			
 			if (shell.delete) {
 				WanshotModel.shells.remove(i);
-				
 				i--;
+				
 				continue;
 			}
 			

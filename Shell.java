@@ -1,5 +1,35 @@
 import java.awt.*;
 
+class ShellSmoke extends Particle {
+	int x;
+	int y;
+	int radius = 10;
+	int opacity = 70;
+	Color color = new Color(136, 136, 136, this.opacity);
+	
+	public ShellSmoke(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+	
+	public void update() {
+		this.radius += 115 * WanshotModel.deltaTime;
+		this.opacity -= 260 * WanshotModel.deltaTime;
+		
+		if (opacity <= 0) {
+			super.delete = true;
+			return;
+		}
+		
+		color = new Color(0, 0, 0, this.opacity);
+	}
+
+	public void render(Graphics2D ctx) {
+		ctx.setColor(this.color);
+		ctx.fillOval(this.x, this.y, this.radius, this.radius);
+	}	
+}
+
 public class Shell extends Parallelogram {
 	//SHELL CONSTANT INFO
 	static final int WIDTH = 9;
@@ -18,6 +48,8 @@ public class Shell extends Parallelogram {
 	boolean delete = false;
 	boolean peace = true;
 	int ricochet = 0;
+	int trailRate;
+	int trailRateCount = 0;
 	Color color;
 	
 	public Shell(double x, double y, double angle, int speed, Tank tankRef) {
@@ -31,6 +63,7 @@ public class Shell extends Parallelogram {
 		switch (speed) {
 			case Shell.REGULAR_SHELL_SPEED:
 				this.color = Shell.REGULAR_SHELL_COLOR;
+				this.trailRate = -5;
 				break;
 		}
 	}
@@ -143,6 +176,14 @@ public class Shell extends Parallelogram {
 			
 			this.centerX = this.x + Shell.WIDTH / 2;
 			this.centerY = this.y + Shell.HEIGHT / 2;
+			
+			//Update particles
+			if (this.trailRateCount < 0) {
+				this.trailRateCount++;
+			} else {
+				this.trailRateCount = this.trailRate;
+				WanshotModel.particles.add(new ShellSmoke((int)this.centerX - 5, (int)this.centerY - 5));
+			}
 			
 			//Collisions
 			this.shellWithTile();
