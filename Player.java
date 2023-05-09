@@ -48,13 +48,8 @@ public class Player extends Tank {
 		if (D) {
 			super.angle += super.rotationInc;
 		}
-		
-		double turretAngle = Math.atan2((double)this.mouseY - super.centerY, (double)this.mouseX - super.centerX);
-		if (turretAngle < 0) {
-			turretAngle = 2 * Math.PI - Math.abs(turretAngle);
-		}
-				
-		super.turretAngle = turretAngle;
+						
+		super.turretAngle = Math.atan2((double)this.mouseY - super.centerY, (double)this.mouseX - super.centerX);
 		
 		//update tank body
 		super.update();

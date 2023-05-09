@@ -58,7 +58,12 @@ public class WanshotController implements MouseListener, MouseMotionListener, Ke
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
 		if (WanshotModel.isPlayerAlive()) {
-			((Player)WanshotModel.tanks.get(0)).shoot();
+			for (int i = 1; i < WanshotModel.tanks.size(); i++) {
+				((Bot)WanshotModel.tanks.get(i)).target.x = e.getX();
+				((Bot)WanshotModel.tanks.get(i)).target.y = e.getY();
+			}
+			
+			//((Player)WanshotModel.tanks.get(0)).shoot();
 		}
 	}
 

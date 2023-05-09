@@ -146,7 +146,7 @@ public class Tank extends Parallelogram {
 	
 	public void createExplosion() {
 		for (int i = 0; i < 100; i++) {
-			TankParticle p = new TankParticle((int)this.x, (int)this.y, this.color);
+			TankParticle p = new TankParticle((int)this.centerX - TankParticle.side / 2, (int)this.centerY - TankParticle.side / 2, this.color);
 			WanshotModel.particles.add(p);
 		}
 	}
@@ -166,7 +166,7 @@ public class Tank extends Parallelogram {
 	
 	public void update() {
 		super.update((int)this.x, (int)this.y, this.angle);
-				
+						
 		if (this.shellCooldownCount < 0) {
 			this.shellCooldownCount++;
 		}
@@ -184,9 +184,17 @@ public class Tank extends Parallelogram {
 		this.centerX = this.x + Tank.WIDTH / 2;
 		this.centerY = this.y + Tank.HEIGHT / 2;
 		
-		//Modulo rotations
+		//Modulo rotations		
 		this.angle %= 2 * Math.PI;
 		this.turretAngle %= 2 * Math.PI;
+		
+		if (this.angle < 0) {
+			this.angle = 2 * Math.PI - Math.abs(this.angle);
+		}
+		
+		if (this.turretAngle < 0) {
+			this.turretAngle = 2 * Math.PI - Math.abs(this.turretAngle);
+		}
 		
 		//Collisions
 		this.tankWithTile();
