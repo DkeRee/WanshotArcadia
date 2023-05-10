@@ -7,7 +7,7 @@ public class PurpleTank extends Bot {
 	static final int shellCap = 3;
 	static final int shellCooldown = -3;
 	static final int frm = -3;
-	static final double stopAndTurn = WanshotModel.degreesToRadians(85);
+	static final double stopAndTurn = WanshotModel.degreesToRadians(40);
 	static final double uTurn = WanshotModel.degreesToRadians(160);
 	static final int updateTargetCount = -3;
 	static final int shellSensitivity = 100;
