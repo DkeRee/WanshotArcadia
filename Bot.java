@@ -250,7 +250,6 @@ public class Bot extends Tank {
 	}
 	
 	public void update() {
-		this.findTarget();
 		this.updateMovement();
 		super.update();
 	}
