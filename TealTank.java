@@ -7,7 +7,7 @@ public class TealTank extends Bot {
 	static final int shellCap = 1;
 	static final int shellCooldown = -15;
 	static final int frm = -13;
-	static final double stopAndTurn = WanshotModel.degreesToRadians(20);
+	static final double stopAndTurn = WanshotModel.degreesToRadians(35);
 	static final double uTurn = WanshotModel.degreesToRadians(160);
 	static final int updateTargetCount = -2;
 	static final int shellSensitivity = 140;

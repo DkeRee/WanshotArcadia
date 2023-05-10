@@ -136,7 +136,7 @@ public class Bot extends Tank {
 			
 			double angleBetweenVectors = Math.acos(dotProduct / (tileVectorMag * tankVectorMag));
 						
-			if (dotProduct > 0 && angleBetweenVectors < Math.PI) {
+			if (dotProduct > 0 && angleBetweenVectors < Math.PI / 2) {
 				this.targetAngle += Math.PI / 2 - angleBetweenVectors;
 				this.dodging = true;
 				
@@ -221,12 +221,14 @@ public class Bot extends Tank {
 		
 		diff = diff < diffOther ? diff : diffOther;
 		
-		if (this.dodging && diff <= WanshotModel.degreesToRadians(7)) {
+		//System.out.println(super.angle);
+		
+		if (this.dodging && diff <= WanshotModel.degreesToRadians(5)) {
 			this.dodging = false;
 		}
 										
 		if (diff >= this.uTurn && !this.move) {
-			super.angle += Math.PI;
+			//super.angle += Math.PI;
 		} else if (diff >= this.stopAndTurn) {
 			this.move = false;
 		} else {
