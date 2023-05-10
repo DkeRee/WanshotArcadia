@@ -83,26 +83,72 @@ public class Bot extends Tank {
 			Point resultant = new Point(shellVector.x - tankVector.x, shellVector.y - tankVector.y);
 			Parallelogram.normalizeVector(resultant);
 			
+			double dotNow = Parallelogram.dotProduct(shellVector, tankVector);
+			double dotNext = Parallelogram.dotProduct(shellVector, resultant);
+
 			double angleToResultant = Math.atan2(resultant.y, resultant.x);
 			if (angleToResultant < 0) {
 				angleToResultant = 2 * Math.PI - Math.abs(angleToResultant);
 			}
 			
+			if (dotNow > 0 && dotNext > 0) {
+				if (angleToResultant > Math.PI) {
+					angleToResultant -= Math.PI;
+				}				
+			}
+				
 			this.targetAngle = angleToResultant;
 			this.dodging = true;
-			
-			return true;
+				
+			return true;	
 		}
 		
 		return false;
 	}
 	
 	public boolean maneuverTiles() {
+		int tileCount = 0;
+		Point tileVector = new Point(0, 0);
+		double closestDist = Double.MAX_VALUE;
+		
+		for (int i = 0; i < WanshotModel.tiles.size(); i++) {
+			Tile tile = WanshotModel.tiles.get(i);
+			double dist = Parallelogram.getMagnitude(new Point(super.centerX - tile.centerX, super.centerY - tile.centerY));
+			
+			if (dist < closestDist) {
+				tileCount++;
+				tileVector.x += Math.cos(super.centerX - tile.centerX);
+				tileVector.y += Math.cos(super.centerY - tile.centerY);
+				closestDist = dist;
+			}
+		}
+		
+		tileVector.x /= tileCount;
+		tileVector.y /= tileCount;
+		
+		//use the same sensitivity as shell...(forgive me)
+		if (closestDist < this.shellSensitivity) {
+			Point tankVector = new Point(Math.cos(super.angle), Math.sin(super.angle));
+			
+			double dotProduct = Parallelogram.dotProduct(tileVector, tankVector);
+			double tileVectorMag = Parallelogram.getMagnitude(tileVector);
+			double tankVectorMag = Parallelogram.getMagnitude(tankVector);
+			
+			double angleBetweenVectors = Math.acos(dotProduct / (tileVectorMag * tankVectorMag));
+						
+			if (dotProduct > 0 && angleBetweenVectors < Math.PI) {
+				this.targetAngle += Math.PI / 2 - angleBetweenVectors;
+				this.dodging = true;
+				
+				return true;
+			}
+		}
+		
 		return false;
 	}
 	
 	public void walk() {
-		double change = Math.random() * WanshotModel.degreesToRadians(5);
+		double change = Math.random() * WanshotModel.degreesToRadians(6);
 		this.targetAngle += Math.random() > 0.5 ? change : -change; 
 		this.targetAngle %= 2 * Math.PI;		
 	}
@@ -175,7 +221,7 @@ public class Bot extends Tank {
 		
 		diff = diff < diffOther ? diff : diffOther;
 		
-		if (this.dodging && diff <= WanshotModel.degreesToRadians(5)) {
+		if (this.dodging && diff <= WanshotModel.degreesToRadians(7)) {
 			this.dodging = false;
 		}
 										

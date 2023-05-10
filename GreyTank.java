@@ -7,7 +7,7 @@ public class GreyTank extends Bot {
 	static final int shellCap = 1;
 	static final int shellCooldown = -20;
 	static final int frm = -3;
-	static final double stopAndTurn = WanshotModel.degreesToRadians(30);
+	static final double stopAndTurn = WanshotModel.degreesToRadians(70);
 	static final double uTurn = WanshotModel.degreesToRadians(120);
 	static final int updateTargetCount = -5;
 	static final int shellSensitivity = 80;

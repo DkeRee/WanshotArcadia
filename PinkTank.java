@@ -2,7 +2,7 @@ import java.awt.Color;
 
 public class PinkTank extends Bot {
 	static final int speed = 100;
-	static final double rotationSpeed = WanshotModel.degreesToRadians(400);
+	static final double rotationSpeed = WanshotModel.degreesToRadians(430);
 	static final int stun = -5;
 	static final int shellCap = 3;
 	static final int shellCooldown = -7;
