@@ -1,13 +1,21 @@
 import java.awt.Color;
 
 public class Bot extends Tank {
-	Point target = new Point(0, 0);
+	private double targetAngle;
 	private boolean move = true;
 	private double regularMove = WanshotModel.degreesToRadians(5);
 	private int frequencyRegularMove;
 	private int frequencyRegularMoveCount;
 	private double stopAndTurn;
 	private double uTurn;
+	private boolean abortNonmove;
+	private boolean dodging = false;
+	private int updateTarget;
+	private int updateTargetCount = 0;
+	private int shellSensitivity;
+	
+	private Shell closest = null;
+	private double closestAngle = 0;
 	
 	public Bot(
 			int x, 
@@ -20,6 +28,9 @@ public class Bot extends Tank {
 			int frm,
 			double stopAndTurn,
 			double uTurn,
+			int updateTarget,
+			int shellSensitivity,
+			boolean abortNonmove,
 			Color color, 
 			Color turretColor, 
 			Color sideColor) {
@@ -40,19 +51,79 @@ public class Bot extends Tank {
 		this.stopAndTurn = stopAndTurn;
 		this.uTurn = uTurn;
 		this.frequencyRegularMove = frm;
+		this.updateTargetCount = updateTarget;
+		this.shellSensitivity = shellSensitivity;
+		this.targetAngle = super.angle;
+		this.abortNonmove = abortNonmove;
+	}
+	
+	public boolean dodgeShells() {
+		Shell closeShell = null;
+		double closestDist = Double.MAX_VALUE;
+		
+		for (int i = 0; i < WanshotModel.shells.size(); i++) {
+			Shell shell = WanshotModel.shells.get(i);
+			double dist = Parallelogram.getMagnitude(new Point(super.centerX - shell.centerX, super.centerY - shell.centerY));
+
+			if (dist < closestDist) {
+				closeShell = shell;
+				closestDist = dist;
+			}
+		}
+		
+		boolean doDodge = this.closest == null ? true : (closeShell != this.closest) || (closeShell == this.closest && closeShell.angle != this.closestAngle);
+		
+		if (doDodge && closestDist < this.shellSensitivity) {
+			this.closest = closeShell;
+			this.closestAngle = closeShell.angle;
+			
+			Point shellVector = new Point(Math.cos(this.closest.angle), Math.sin(this.closest.angle));
+			Point tankVector = new Point(Math.cos(super.angle), Math.sin(super.angle));
+			
+			Point resultant = new Point(shellVector.x - tankVector.x, shellVector.y - tankVector.y);
+			Parallelogram.normalizeVector(resultant);
+			
+			double angleToResultant = Math.atan2(resultant.y, resultant.x);
+			if (angleToResultant < 0) {
+				angleToResultant = 2 * Math.PI - Math.abs(angleToResultant);
+			}
+			
+			this.targetAngle = angleToResultant;
+			this.dodging = true;
+			
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public boolean maneuverTiles() {
+		return false;
+	}
+	
+	public void walk() {
+		double change = Math.random() * WanshotModel.degreesToRadians(5);
+		this.targetAngle += Math.random() > 0.5 ? change : -change; 
+		this.targetAngle %= 2 * Math.PI;		
 	}
 	
 	public void findTarget() {
-		
+		if (this.updateTargetCount < 0) {
+			this.updateTargetCount++;
+		} else if (!this.dodging) {
+			this.updateTargetCount = this.updateTarget;
+			if (this.dodgeShells()) {
+				return;
+			} else if (this.maneuverTiles()) {
+				return;
+			} else {
+				this.walk();
+			}
+		}
 	}
 	
-	public void followTarget() {
-		double angleToTarget = Math.atan2(target.y - super.centerY, target.x - super.centerX);
-		if (angleToTarget < 0) {
-			angleToTarget = 2 * Math.PI - Math.abs(angleToTarget);
-		}
-		
-		double diff = angleToTarget - super.angle;
+	public void followTarget() {		
+		double diff = this.targetAngle - super.angle;
 		double diffOther = 2 * Math.PI - diff;
 				
 		if (diff >= 0) {
@@ -103,8 +174,12 @@ public class Bot extends Tank {
 		}
 		
 		diff = diff < diffOther ? diff : diffOther;
-				
-		if (diff >= this.uTurn && this.move) {
+		
+		if (this.dodging && diff <= WanshotModel.degreesToRadians(5)) {
+			this.dodging = false;
+		}
+										
+		if (diff >= this.uTurn && !this.move) {
 			super.angle += Math.PI;
 		} else if (diff >= this.stopAndTurn) {
 			this.move = false;
@@ -112,7 +187,7 @@ public class Bot extends Tank {
 			this.move = true;
 		}
 		
-		if (this.move) {
+		if (this.move || this.abortNonmove) {
 			super.x += super.xInc;
 			super.y += super.yInc;
 		}
@@ -127,6 +202,7 @@ public class Bot extends Tank {
 	}
 	
 	public void update() {
+		this.findTarget();
 		this.updateMovement();
 		super.update();
 	}
