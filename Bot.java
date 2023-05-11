@@ -308,7 +308,7 @@ public class Bot extends Tank {
 		}		
 	}
 	
-	public boolean canShoot(Point startingPoint, double angle, int bouncesLeft) {		
+	public boolean canShoot(Point startingPoint, double angle, int bouncesLeft, boolean foundPlayer) {		
 		Point raycast = new Point(startingPoint.x, startingPoint.y);
 		Tank player = WanshotModel.tanks.get(0);
 		
@@ -316,7 +316,7 @@ public class Bot extends Tank {
 			//check if hitting any enemy tanks, return false if in range
 			for (int j = 1; j < WanshotModel.tanks.size(); j++) {
 				Tank enemy = WanshotModel.tanks.get(j);
-				Parallelogram hitbox = new Parallelogram((int)raycast.x, (int)raycast.y, Shell.WIDTH + 10, Shell.HEIGHT + 10, angle);
+				Parallelogram hitbox = new Parallelogram((int)raycast.x, (int)raycast.y, 40, 40, 0);
 			
 				if (enemy.sat_parallelogram(hitbox)) {
 					return false;
@@ -327,7 +327,7 @@ public class Bot extends Tank {
 			Parallelogram hitbox = new Parallelogram((int)raycast.x, (int)raycast.y, Shell.WIDTH, Shell.HEIGHT, angle);
 			
 			if (player.sat_parallelogram(hitbox)) {
-				return true;
+				foundPlayer = true;
 			}
 			
 			//check if hitting any tiles, return recurse with new params if bounces are left, if not return false
@@ -336,7 +336,7 @@ public class Bot extends Tank {
 				
 				if (tile.sat_parallelogram(hitbox)) {
 					if (bouncesLeft - 1 <= 0) {
-						return false;
+						return foundPlayer;
 					}
 					
 					if (!tile.info.bottomNeighboor || !tile.info.topNeighboor) {
@@ -347,7 +347,7 @@ public class Bot extends Tank {
 					
 					Point newStartingPoint = new Point(raycast.x + Math.cos(angle) * 5, raycast.y + Math.sin(angle) * 5);
 					
-					return this.canShoot(newStartingPoint, angle, bouncesLeft - 1);
+					return this.canShoot(newStartingPoint, angle, bouncesLeft - 1, foundPlayer);
 				}
 			}
 			
@@ -360,7 +360,7 @@ public class Bot extends Tank {
 	
 	public void manageShoot() {
 		Point offsetStart = new Point(super.centerX + Math.cos(super.centerX) * 50, super.centerY + Math.sin(super.centerY) * 50);
-		if (this.canShoot(offsetStart, super.turretAngle, this.shellBounceAmount)) {
+		if (this.canShoot(offsetStart, super.turretAngle, this.shellBounceAmount, false)) {
 			super.shoot(this.shellType);
 		}
 	}
