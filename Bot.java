@@ -1,6 +1,7 @@
-import java.awt.Color;
+import java.awt.*;
 
 public class Bot extends Tank {
+	private final int MAX_RAYCAST = 1000;
 	private double targetAngle;
 	private double targetTurretRot = 0;
 	private double turretArcSize;
@@ -16,10 +17,12 @@ public class Bot extends Tank {
 	private int updateTarget;
 	private int updateTargetCount = 0;
 	private int shellSensitivity;
+	private int shellType;
+	private int shellBounceAmount;
 	
 	private Shell closest = null;
 	private double closestAngle = 0;
-	
+		
 	public Bot(
 			int x, 
 			int y,
@@ -36,6 +39,8 @@ public class Bot extends Tank {
 			boolean abortNonmove,
 			double turretRotationSpeed,
 			double turretArcSize,
+			int shellType,
+			int shellBounceAmount,
 			Color color, 
 			Color turretColor, 
 			Color sideColor) {
@@ -62,6 +67,8 @@ public class Bot extends Tank {
 		this.abortNonmove = abortNonmove;
 		this.turretRotationSpeed = turretRotationSpeed;
 		this.turretArcSize = turretArcSize;
+		this.shellType = shellType;
+		this.shellBounceAmount = shellBounceAmount;
 	}
 	
 	public boolean dodgeShells() {
@@ -301,9 +308,68 @@ public class Bot extends Tank {
 		}		
 	}
 	
+	public boolean canShoot(Point startingPoint, double angle, int bouncesLeft) {		
+		Point raycast = new Point(startingPoint.x, startingPoint.y);
+		Tank player = WanshotModel.tanks.get(0);
+		
+		for (int i = 0; i < this.MAX_RAYCAST; i++) {						
+			//check if hitting any enemy tanks, return false if in range
+			for (int j = 1; j < WanshotModel.tanks.size(); j++) {
+				Tank enemy = WanshotModel.tanks.get(j);
+				int checkRange = 40;
+				Parallelogram hitbox = new Parallelogram((int)raycast.x, (int)raycast.y, checkRange, checkRange, angle);
+			
+				if (enemy.sat_parallelogram(hitbox)) {
+					return false;
+				}
+			}
+			
+			//check if directly hitting player, return true if is
+			Parallelogram hitbox = new Parallelogram((int)raycast.x, (int)raycast.y, Shell.WIDTH, Shell.HEIGHT, angle);
+			
+			if (player.sat_parallelogram(hitbox)) {
+				return true;
+			}
+			
+			//check if hitting any tiles, return recurse with new params if bounces are left, if not return false
+			for (int j = 0; j < WanshotModel.tiles.size(); j++) {
+				Tile tile = WanshotModel.tiles.get(j);
+				
+				if (tile.sat_parallelogram(hitbox)) {
+					if (bouncesLeft - 1 <= 0) {
+						return false;
+					}
+					
+					if (!tile.info.bottomNeighboor || !tile.info.topNeighboor) {
+						angle = 2 * Math.PI - angle;
+					} else {
+						angle = Math.PI - angle;
+					}
+					
+					Point newStartingPoint = new Point(raycast.x + Math.cos(angle) * 5, raycast.y + Math.sin(angle) * 5);
+					
+					return this.canShoot(newStartingPoint, angle, bouncesLeft - 1);
+				}
+			}
+			
+			raycast.x += Math.cos(angle);
+			raycast.y += Math.sin(angle);
+		}
+		
+		return false;
+	}
+	
+	public void manageShoot() {
+		Point offsetStart = new Point(super.centerX + Math.cos(super.centerX) * 50, super.centerY + Math.sin(super.centerY) * 50);
+		if (this.canShoot(offsetStart, super.turretAngle, this.shellBounceAmount)) {
+			super.shoot(this.shellType);
+		}
+	}
+	
 	public void updateTurret() {
 		if (WanshotModel.isPlayerAlive()) {
 			this.moveTurret();
+			this.manageShoot();
 		}
 	}
 	

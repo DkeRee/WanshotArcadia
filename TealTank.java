@@ -14,6 +14,8 @@ public class TealTank extends Bot {
 	static final boolean abortNonmove = true;
 	static final double turretRotationSpeed = WanshotModel.degreesToRadians(1);
 	static final double turretArcSize = WanshotModel.degreesToRadians(1);
+	static final int shellType = Shell.MISSLE_SPEED;
+	static final int shellBounceAmount = 0;
 	static final Color color = Color.decode("#154734");
 	static final Color turretColor = Color.decode("#0E4732");
 	static final Color sideColor = Color.decode("#B0896B");
@@ -35,6 +37,8 @@ public class TealTank extends Bot {
 				abortNonmove,
 				turretRotationSpeed,
 				turretArcSize,
+				shellType,
+				shellBounceAmount,
 				color,
 				turretColor,
 				sideColor
