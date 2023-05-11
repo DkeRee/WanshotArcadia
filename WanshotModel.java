@@ -20,11 +20,11 @@ public class WanshotModel {
 	
 	public WanshotModel() {
 		tanks.add(new Player(50, 50));
-		tanks.add(new GreenTank(200, 400));
+		//tanks.add(new PurpleTank(200, 400));
 		//tanks.add(new GreenTank(70, 400));
 		//tanks.add(new PurpleTank(600, 400));
 		//tanks.add(new PurpleTank(400, 400));
-		//tanks.add(new PurpleTank(400, 400));
+		//tanks.add(new TealTank(400, 400));
 		//tanks.add(new PurpleTank(400, 400));
 		this.initTiles();
 	}

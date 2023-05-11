@@ -151,8 +151,12 @@ public class Tank extends Parallelogram {
 		}
 	}
 	
+	public boolean canShoot() {
+		return this.shellShot < this.shellCap && this.shellCooldownCount == 0;
+	}
+	
 	public void shoot(int shellType) {
-		if (this.shellShot < this.shellCap && this.shellCooldownCount == 0) {
+		if (this.canShoot()) {
 			double initialBoostX = (20 * Math.cos(this.turretAngle));
 			double initialBoostY = (20 * Math.sin(this.turretAngle));
 			Shell shell = new Shell(this.centerX - Shell.WIDTH / 2 + initialBoostX, this.centerY - Shell.HEIGHT / 2 + initialBoostY, this.turretAngle, shellType, this);

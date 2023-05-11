@@ -308,7 +308,11 @@ public class Bot extends Tank {
 		}		
 	}
 	
-	public boolean canShoot(Point startingPoint, double angle, int bouncesLeft) {		
+	public boolean canShoot(Point startingPoint, double angle, int bouncesLeft) {
+		if (!super.canShoot()) {
+			return false;
+		}
+		
 		Point raycast = new Point(startingPoint.x, startingPoint.y);
 		Tank player = WanshotModel.tanks.get(0);
 		

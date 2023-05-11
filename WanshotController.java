@@ -23,6 +23,27 @@ public class WanshotController implements MouseListener, MouseMotionListener, Ke
 		// TODO Auto-generated method stub
 		if (WanshotModel.isPlayerAlive()) {
 			((Player)WanshotModel.tanks.get(0)).updateKey(e.getKeyCode(), true);
+			
+			switch (e.getKeyCode()) {
+			case 49:
+				WanshotModel.tanks.add(new BrownTank(400, 400));
+				break;
+			case 50:
+				WanshotModel.tanks.add(new GreyTank(400, 400));
+				break;
+			case 51:
+				WanshotModel.tanks.add(new TealTank(400, 400));
+				break;
+			case 52:
+				WanshotModel.tanks.add(new PinkTank(400, 400));
+				break;
+			case 53:
+				WanshotModel.tanks.add(new PurpleTank(400, 400));
+				break;
+			case 54:
+				WanshotModel.tanks.add(new GreenTank(400, 400));
+				break;
+			}
 		}
 	}
 
