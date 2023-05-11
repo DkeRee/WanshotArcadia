@@ -126,8 +126,7 @@ public class Bot extends Tank {
 		tileVector.x /= tileCount;
 		tileVector.y /= tileCount;
 		
-		//use the same sensitivity as shell...(forgive me)
-		if (closestDist < this.shellSensitivity) {
+		if (closestDist < 200) {
 			Point tankVector = new Point(Math.cos(super.angle), Math.sin(super.angle));
 			
 			double dotProduct = Parallelogram.dotProduct(tileVector, tankVector);
@@ -249,7 +248,12 @@ public class Bot extends Tank {
 		}
 	}
 	
+	public void updateTurret() {
+		
+	}
+	
 	public void update() {
+		this.updateTurret();
 		this.updateMovement();
 		super.update();
 	}
