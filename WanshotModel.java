@@ -24,6 +24,8 @@ public class WanshotModel {
 		tanks.add(new PurpleTank(400, 400));
 		tanks.add(new PurpleTank(400, 400));
 		tanks.add(new PurpleTank(400, 400));
+		tanks.add(new PurpleTank(400, 400));
+		tanks.add(new PurpleTank(400, 400));
 		this.initTiles();
 	}
 	
