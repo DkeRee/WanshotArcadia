@@ -308,7 +308,7 @@ public class Bot extends Tank {
 		}		
 	}
 	
-	public boolean canShoot(Point startingPoint, double angle, int bouncesLeft, boolean foundPlayer) {		
+	public boolean canShoot(Point startingPoint, double angle, int bouncesLeft) {		
 		Point raycast = new Point(startingPoint.x, startingPoint.y);
 		Tank player = WanshotModel.tanks.get(0);
 		
@@ -327,7 +327,7 @@ public class Bot extends Tank {
 			Parallelogram hitbox = new Parallelogram((int)raycast.x, (int)raycast.y, Shell.WIDTH, Shell.HEIGHT, angle);
 			
 			if (player.sat_parallelogram(hitbox)) {
-				foundPlayer = true;
+				return true;
 			}
 			
 			//check if hitting any tiles, return recurse with new params if bounces are left, if not return false
@@ -336,7 +336,7 @@ public class Bot extends Tank {
 				
 				if (tile.sat_parallelogram(hitbox)) {
 					if (bouncesLeft - 1 <= 0) {
-						return foundPlayer;
+						return false;
 					}
 					
 					if (!tile.info.bottomNeighboor || !tile.info.topNeighboor) {
@@ -347,7 +347,7 @@ public class Bot extends Tank {
 					
 					Point newStartingPoint = new Point(raycast.x + Math.cos(angle) * 5, raycast.y + Math.sin(angle) * 5);
 					
-					return this.canShoot(newStartingPoint, angle, bouncesLeft - 1, foundPlayer);
+					return this.canShoot(newStartingPoint, angle, bouncesLeft - 1);
 				}
 			}
 			
@@ -360,7 +360,7 @@ public class Bot extends Tank {
 	
 	public void manageShoot() {
 		Point offsetStart = new Point(super.centerX + Math.cos(super.centerX) * 50, super.centerY + Math.sin(super.centerY) * 50);
-		if (this.canShoot(offsetStart, super.turretAngle, this.shellBounceAmount, false)) {
+		if (this.canShoot(offsetStart, super.turretAngle, this.shellBounceAmount)) {
 			super.shoot(this.shellType);
 		}
 	}
