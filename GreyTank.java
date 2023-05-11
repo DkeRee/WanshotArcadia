@@ -12,6 +12,8 @@ public class GreyTank extends Bot {
 	static final int updateTargetCount = -5;
 	static final int shellSensitivity = 150;
 	static final boolean abortNonmove = false;
+	static final double turretRotationSpeed = WanshotModel.degreesToRadians(2);
+	static final double turretArcSize = WanshotModel.degreesToRadians(90);
 	static final Color color = Color.decode("#4A4A4A");
 	static final Color turretColor = Color.decode("#4D4D4D");
 	static final Color sideColor = Color.decode("#B0896B");
@@ -31,6 +33,8 @@ public class GreyTank extends Bot {
 			updateTargetCount,
 			shellSensitivity,
 			abortNonmove,
+			turretRotationSpeed,
+			turretArcSize,
 			color,
 			turretColor,
 			sideColor

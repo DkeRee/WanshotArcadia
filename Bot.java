@@ -2,8 +2,11 @@ import java.awt.Color;
 
 public class Bot extends Tank {
 	private double targetAngle;
+	private double targetTurretRot = 0;
+	private double turretArcSize;
 	private boolean move = true;
 	private double regularMove = WanshotModel.degreesToRadians(5);
+	private double turretRotationSpeed;
 	private int frequencyRegularMove;
 	private int frequencyRegularMoveCount;
 	private double stopAndTurn;
@@ -31,6 +34,8 @@ public class Bot extends Tank {
 			int updateTarget,
 			int shellSensitivity,
 			boolean abortNonmove,
+			double turretRotationSpeed,
+			double turretArcSize,
 			Color color, 
 			Color turretColor, 
 			Color sideColor) {
@@ -55,6 +60,8 @@ public class Bot extends Tank {
 		this.shellSensitivity = shellSensitivity;
 		this.targetAngle = super.angle;
 		this.abortNonmove = abortNonmove;
+		this.turretRotationSpeed = turretRotationSpeed;
+		this.turretArcSize = turretArcSize;
 	}
 	
 	public boolean dodgeShells() {
@@ -219,9 +226,7 @@ public class Bot extends Tank {
 		}
 		
 		diff = diff < diffOther ? diff : diffOther;
-		
-		//System.out.println(super.angle);
-		
+				
 		if (this.dodging && diff <= WanshotModel.degreesToRadians(5)) {
 			this.dodging = false;
 		}
@@ -248,8 +253,58 @@ public class Bot extends Tank {
 		}
 	}
 	
-	public void updateTurret() {
+	public void findNewTurretRot() {
+		Tank player = WanshotModel.tanks.get(0);
+		double angleToPlayer = Math.atan2(super.centerY - player.centerY, super.centerX - player.centerX) - Math.PI;
 		
+		if (angleToPlayer < 0) {
+			angleToPlayer = 2 * Math.PI - Math.abs(angleToPlayer);
+		}
+				
+		double randOffset = Math.random() * this.turretArcSize;
+		angleToPlayer += Math.random() > 0.5 ? randOffset : -randOffset;
+		
+		angleToPlayer %= 2 * Math.PI;
+				
+		this.targetTurretRot = angleToPlayer;
+	}
+	
+	public void moveTurret() {		
+		double diff = this.targetTurretRot - super.turretAngle;
+		double diffOther = 2 * Math.PI - diff;
+						
+		if (diff >= 0) {
+			if (diff < diffOther) {
+				//+
+				super.turretAngle += this.turretRotationSpeed;
+			} else {
+				//-
+				super.turretAngle -= this.turretRotationSpeed;
+			}
+		} else {
+			diff = Math.abs(diff);
+			diffOther = 2 * Math.PI - diff;
+			
+			if (diff < diffOther) {
+				//-
+				super.turretAngle -= this.turretRotationSpeed;
+			} else {
+				//+
+				super.turretAngle += this.turretRotationSpeed;
+			}
+		}
+		
+		diff = diff < diffOther ? diff : diffOther;
+						
+		if (diff <= WanshotModel.degreesToRadians(40)) {
+			this.findNewTurretRot();
+		}		
+	}
+	
+	public void updateTurret() {
+		if (WanshotModel.isPlayerAlive()) {
+			this.moveTurret();
+		}
 	}
 	
 	public void update() {

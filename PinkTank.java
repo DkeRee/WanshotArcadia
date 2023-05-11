@@ -12,6 +12,8 @@ public class PinkTank extends Bot {
 	static final int updateTargetCount = -3;
 	static final int shellSensitivity = 400;
 	static final boolean abortNonmove = false;
+	static final double turretRotationSpeed = WanshotModel.degreesToRadians(3);
+	static final double turretArcSize = WanshotModel.degreesToRadians(95);
 	static final Color color = Color.decode("#B82A55");
 	static final Color turretColor = Color.decode("#B02951");
 	static final Color sideColor = Color.decode("#B0896B");
@@ -31,6 +33,8 @@ public class PinkTank extends Bot {
 			updateTargetCount,
 			shellSensitivity,
 			abortNonmove,
+			turretRotationSpeed,
+			turretArcSize,
 			color,
 			turretColor,
 			sideColor
