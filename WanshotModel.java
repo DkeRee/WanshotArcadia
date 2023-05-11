@@ -19,11 +19,11 @@ public class WanshotModel {
 	static ArrayList<Particle> particles = new ArrayList<Particle>();
 	
 	public WanshotModel() {
-		tanks.add(new Player(WanshotModel.WIDTH / 2, WanshotModel.HEIGHT / 2));
-		//tanks.add(new GreyTank(200, 200));
-		//tanks.add(new TealTank(400, 400));
-		tanks.add(new PinkTank(50, 50));
-		//tanks.add(new PurpleTank(200, 200));
+		tanks.add(new Player(50, 50));
+		tanks.add(new PurpleTank(400, 400));
+		tanks.add(new PurpleTank(400, 400));
+		tanks.add(new PurpleTank(400, 400));
+		tanks.add(new PurpleTank(400, 400));
 		this.initTiles();
 	}
 	
