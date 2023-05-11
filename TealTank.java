@@ -10,7 +10,7 @@ public class TealTank extends Bot {
 	static final double stopAndTurn = WanshotModel.degreesToRadians(35);
 	static final double uTurn = WanshotModel.degreesToRadians(160);
 	static final int updateTargetCount = -2;
-	static final int shellSensitivity = 140;
+	static final int shellSensitivity = 800;
 	static final boolean abortNonmove = true;
 	static final Color color = Color.decode("#154734");
 	static final Color turretColor = Color.decode("#0E4732");

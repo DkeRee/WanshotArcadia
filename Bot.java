@@ -73,7 +73,7 @@ public class Bot extends Tank {
 		
 		boolean doDodge = this.closest == null ? true : (closeShell != this.closest) || (closeShell == this.closest && closeShell.angle != this.closestAngle);
 		
-		if (doDodge && closestDist < this.shellSensitivity) {
+		if (doDodge && closestDist < this.shellSensitivity && !closeShell.peace) {
 			this.closest = closeShell;
 			this.closestAngle = closeShell.angle;
 			

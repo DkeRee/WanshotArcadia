@@ -10,7 +10,7 @@ public class GreyTank extends Bot {
 	static final double stopAndTurn = WanshotModel.degreesToRadians(70);
 	static final double uTurn = WanshotModel.degreesToRadians(120);
 	static final int updateTargetCount = -5;
-	static final int shellSensitivity = 80;
+	static final int shellSensitivity = 150;
 	static final boolean abortNonmove = false;
 	static final Color color = Color.decode("#4A4A4A");
 	static final Color turretColor = Color.decode("#4D4D4D");

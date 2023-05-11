@@ -10,7 +10,7 @@ public class PurpleTank extends Bot {
 	static final double stopAndTurn = WanshotModel.degreesToRadians(35);
 	static final double uTurn = WanshotModel.degreesToRadians(160);
 	static final int updateTargetCount = -3;
-	static final int shellSensitivity = 150;
+	static final int shellSensitivity = 300;
 	static final boolean abortNonmove = false;
 	static final Color color = Color.decode("#934A9E");
 	static final Color turretColor = Color.decode("#80408A");
