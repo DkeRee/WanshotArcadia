@@ -316,7 +316,7 @@ public class Bot extends Tank {
 			//check if hitting any enemy tanks, return false if in range
 			for (int j = 1; j < WanshotModel.tanks.size(); j++) {
 				Tank enemy = WanshotModel.tanks.get(j);
-				Parallelogram hitbox = new Parallelogram((int)raycast.x, (int)raycast.y, 40, 40, 0);
+				Parallelogram hitbox = new Parallelogram((int)raycast.x, (int)raycast.y, 20, 20, 0);
 			
 				if (enemy.sat_parallelogram(hitbox)) {
 					return false;
