@@ -5,7 +5,7 @@ public class BrownTank extends Bot {
 	static final double rotationSpeed = 0;
 	static final int stun = 0;
 	static final int shellCap = 1;
-	static final int shellCooldown = -45;
+	static final int shellCooldown = -70;
 	static final int frm = 0;
 	static final double stopAndTurn = 0;
 	static final double uTurn = 0;
