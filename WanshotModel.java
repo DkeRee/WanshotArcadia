@@ -8,6 +8,9 @@ public class WanshotModel {
 	//Deltatime
 	static final double deltaTime = 1.0 / 60.0;
 	
+	//Game manager
+	private WanshotManager manager = new WanshotManager();
+	
 	public static double degreesToRadians(double degree) {
 		return degree * (Math.PI / 180);
 	}
@@ -20,19 +23,15 @@ public class WanshotModel {
 	
 	public WanshotModel() {
 		tanks.add(new Player(50, 50));
-		//tanks.add(new BrownTank(400, 400));
-		//tanks.add(new BrownTank(410, 400));
-		//tanks.add(new PurpleTank(200, 400));
-		//tanks.add(new GreenTank(70, 400));
-		//tanks.add(new PurpleTank(600, 400));
-		//tanks.add(new PurpleTank(400, 400));
-		//tanks.add(new TealTank(400, 400));
-		//tanks.add(new PurpleTank(400, 400));
 		this.initTiles();
 	}
 	
 	public static boolean isPlayerAlive() {
 		return WanshotModel.tanks.size() > 0 && WanshotModel.tanks.get(0) instanceof Player;
+	}
+	
+	public static boolean onlyPlayerAlive() {
+		return WanshotModel.isPlayerAlive() && WanshotModel.tanks.size() == 1;
 	}
 	
 	public void initTiles() {
@@ -81,10 +80,13 @@ public class WanshotModel {
 		WanshotModel.tanks.clear();
 		WanshotModel.shells.clear();
 		
-		tanks.add(new Player(WanshotModel.WIDTH / 2, WanshotModel.HEIGHT / 2));
+		tanks.add(new Player(50, 50));
+		this.manager = new WanshotManager();
 	}
 	
 	public void update() {
+		this.manager.update();
+		
 		for (int i = 0; i < WanshotModel.particles.size(); i++) {
 			Particle particle = WanshotModel.particles.get(i);
 			
