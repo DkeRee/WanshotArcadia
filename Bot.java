@@ -363,7 +363,7 @@ public class Bot extends Tank {
 	}
 	
 	public void manageShoot() {
-		Point offsetStart = new Point(super.centerX + Math.cos(super.centerX) * 50, super.centerY + Math.sin(super.centerY) * 50);
+		Point offsetStart = new Point(super.centerX + Math.cos(super.turretAngle) * 50, super.centerY + Math.sin(super.turretAngle) * 50);
 		if (this.canShoot(offsetStart, super.turretAngle, this.shellBounceAmount)) {
 			super.shoot(this.shellType);
 		}
@@ -371,8 +371,8 @@ public class Bot extends Tank {
 	
 	public void updateTurret() {
 		if (WanshotModel.isPlayerAlive()) {
-			this.moveTurret();
 			this.manageShoot();
+			this.moveTurret();
 		}
 	}
 	

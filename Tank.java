@@ -130,7 +130,7 @@ public class Tank extends Parallelogram {
 	public void tankWithTank() {
 		for (int i = 0; i < WanshotModel.tanks.size(); i++) {
 			Tank tank = WanshotModel.tanks.get(i);
-			
+						
 			//colliding with tank not self
 			if (System.identityHashCode(this) != System.identityHashCode(tank)) {
 				if (super.sat_parallelogram(tank)) {
