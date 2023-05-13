@@ -238,7 +238,7 @@ public class Shell extends Parallelogram {
 			
 			//wait for shell to leave contact of tank then remove peace mode
 			if (this.peace) {
-				if (!super.sat_parallelogram(tank) && System.identityHashCode(this.tankRef) == System.identityHashCode(tank)) {
+				if (!super.sat_parallelogram(tank) && (this.tankRef == null || System.identityHashCode(this.tankRef) == System.identityHashCode(tank))) {
 					this.peace = false;
 					return;
 				}
@@ -267,8 +267,13 @@ public class Shell extends Parallelogram {
 					this.createHit();
 					shell.createHit();
 					
-					this.tankRef.shellShot--;
-					shell.tankRef.shellShot--;
+					if (this.tankRef != null) {
+						this.tankRef.shellShot--;
+					}
+					
+					if (shell.tankRef != null) {
+						shell.tankRef.shellShot--;
+					}
 					break;
 				}
 			}
