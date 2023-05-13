@@ -28,6 +28,25 @@ public class WanshotView extends JPanel {
 		g.fillRect(0, 0, WanshotModel.WIDTH, WanshotModel.HEIGHT);
 		
 		WanshotView.oldTransform = ctx.getTransform();
+		
+		//Render Background Text!!!
+		
+		//AA!!!
+	    ctx.setRenderingHint(
+	    	         RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		
+	    Font font = new Font("monospace", Font.BOLD, 96);
+	    ctx.setFont(font);
+	    ctx.setColor(Color.decode("#FFC97A"));
+		ctx.drawString("WANSHOT", 210, 300);
+		
+	    font = new Font("monospace", Font.BOLD, 70);
+	    ctx.setFont(font);
+		ctx.drawString("Level " + this.model.getManager().getLevel(), 330, 395);
+		
+	    font = new Font("monospace", Font.BOLD, 40);
+	    ctx.setFont(font);
+	    ctx.drawString("Wave " + this.model.getManager().getWave() + "/" + this.model.getManager().getMaxWave(), 365, 470);
 
 		//Render Shadows
 		for (int i = 0; i < WanshotModel.tiles.size(); i++) {

@@ -129,4 +129,8 @@ public class WanshotModel {
 		if (!WanshotModel.isPlayerAlive())
 			this.reset();
 	}
+	
+	public WanshotManager getManager() {
+		return this.manager;
+	}
 }

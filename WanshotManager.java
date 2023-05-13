@@ -28,7 +28,7 @@ class TankCache {
 }
 
 public class WanshotManager {
-	private int level = 1;
+	private int level = 0;
 	private int waveCap = 25;
 	private int wave = 0;
 	private int enemiesCap = 6;
@@ -60,7 +60,6 @@ public class WanshotManager {
 	public void update() {
 		if (WanshotModel.isPlayerAlive()) {
 			if (WanshotModel.onlyPlayerAlive() && !this.unloading) {
-				System.out.println("CURR LEVEL: " + this.level + " CURR WAVE: " + this.wave);
 				this.unloading = true;
 				this.unloadSpeed = this.getUnloadSpeed();
 			}
@@ -185,5 +184,13 @@ public class WanshotManager {
 	
 	public int getLevel() {
 		return this.level;
+	}
+	
+	public int getWave() {
+		return this.wave + 1;
+	}
+	
+	public int getMaxWave() {
+		return this.levelList.size();
 	}
 }
