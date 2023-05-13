@@ -31,7 +31,7 @@ public class WanshotManager {
 	private int level = 1;
 	private int waveCap = 25;
 	private int wave = 0;
-	private int enemiesCap = 40;
+	private int enemiesCap = 6;
 	private boolean unloading = false;
 	private int unloadCounter = 0;
 	private int unloadSpeed;
