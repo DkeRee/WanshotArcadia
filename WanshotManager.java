@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.awt.*;
 
 enum TankTypes {
@@ -11,7 +10,7 @@ enum TankTypes {
 }
 
 class SpawnParticle extends Particle {
-	static final int side = 25;
+	static final int side = 80;
 	int x;
 	int y;
 	int opacity = 200;
@@ -90,7 +89,7 @@ class TankCache {
 				break;
 		}
 		
-		for (int i = 0; i < 50; i++) {
+		for (int i = 0; i < 5; i++) {
 			SpawnParticle p = new SpawnParticle(centerX - SpawnParticle.side / 2, centerY - SpawnParticle.side / 2, color);
 			WanshotModel.particles.add(p);
 		}
@@ -115,23 +114,23 @@ public class WanshotManager {
 	private int unloadSpeed;
 	private int loaderInd = 0;
 	private int distImmunity = 350;
-	private ArrayList<ArrayList<TankCache>> levelList = new ArrayList<ArrayList<TankCache>>();
+	private TankCache[][] levelList;
 	
 	public WanshotManager() {
 		this.levelList = this.populateLevelList();
 	}
 	
-	public ArrayList<ArrayList<TankCache>> populateLevelList() {
-		ArrayList<ArrayList<TankCache>> list = new ArrayList<ArrayList<TankCache>>();
+	public TankCache[][] populateLevelList() {
+		TankCache[][] list = new TankCache[this.getMaxWaves()][0];
 		
-		for (int i = 0; i < this.getMaxWaves(); i++) {
-			ArrayList<TankCache> currWave = new ArrayList<TankCache>();
+		for (int i = 0; i < list.length; i++) {
+			TankCache[] currWave = new TankCache[this.getMaxWaveEnemies(i)];
 			
-			for (int j = 0; j < this.getMaxWaveEnemies(i); j++) {
-				currWave.add(this.createTank());
+			for (int j = 0; j < currWave.length; j++) {
+				currWave[j] = this.createTank();
 			}
 			
-			list.add(currWave);
+			list[i] = currWave;
 		}
 		
 		return list;
@@ -150,25 +149,24 @@ public class WanshotManager {
 				} else {
 					this.unloadCounter = this.unloadSpeed;
 					
-					ArrayList<TankCache> levelWave = this.levelList.get(this.wave);
+					TankCache[] levelWave = this.levelList[this.wave];
 					
 					//upload tank and do all the specifics
-					TankCache cache = levelWave.get(this.loaderInd);
+					TankCache cache = levelWave[this.loaderInd];
 					
 					//upload tank cache into game
 					this.readTankCache(cache);
 					this.loaderInd++;
 					
 					//we have reached the end of this wave, go onto the next wave and move onto the next wave once player clears this one
-					if (this.loaderInd == levelWave.size()) {
+					if (this.loaderInd == levelWave.length) {
 						this.wave++;
 						this.unloading = false;
-						levelWave.clear();
 						this.loaderInd = 0;
 					}
 					
 					//we have reached the end of this level, go onto the next level
-					if (this.wave == this.levelList.size()) {
+					if (this.wave == this.levelList.length) {
 						this.wave = 0;
 						this.level++;
 						this.levelList = this.populateLevelList();
@@ -252,7 +250,7 @@ public class WanshotManager {
 	
 	public int getUnloadSpeed() {
 		int unloadSpeedThreshold = 20;
-		return Math.min(-((unloadSpeedThreshold - this.level)), -20);
+		return Math.min(-((unloadSpeedThreshold - this.level)), -40);
 	}
 	
 	public Point getRandomCoords() {
@@ -286,6 +284,6 @@ public class WanshotManager {
 	}
 	
 	public int getMaxWave() {
-		return this.levelList.size();
+		return this.levelList.length;
 	}
 }
