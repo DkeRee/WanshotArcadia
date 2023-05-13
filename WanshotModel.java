@@ -91,7 +91,7 @@ public class WanshotModel {
 		for (int i = 0; i < WanshotModel.particles.size(); i++) {
 			Particle particle = WanshotModel.particles.get(i);
 			
-			if (particle.delete) {
+			if (particle == null || particle.delete) {
 				WanshotModel.particles.remove(i);
 				i--;
 				
