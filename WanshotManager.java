@@ -31,10 +31,11 @@ public class WanshotManager {
 	private int level = 0;
 	private int waveCap = 25;
 	private int wave = 0;
-	private int enemiesCap = 4;
+	private int enemiesCap = 6;
 	private boolean unloading = false;
 	private int unloadCounter = 0;
 	private int unloadSpeed;
+	private int loaderInd = 0;
 	private ArrayList<ArrayList<TankCache>> levelList = new ArrayList<ArrayList<TankCache>>();
 	
 	public WanshotManager() {
@@ -70,19 +71,21 @@ public class WanshotManager {
 				} else {
 					this.unloadCounter = this.unloadSpeed;
 					
+					ArrayList<TankCache> levelWave = this.levelList.get(this.wave);
+					
 					//upload tank and do all the specifics
-					TankCache cache = this.levelList.get(this.wave).get(0);
+					TankCache cache = levelWave.get(this.loaderInd);
 					
 					//upload tank cache into game
 					this.readTankCache(cache);
-					
-					//manager clear out this tank cache it has been uploded
-					this.levelList.get(this.wave).remove(0);
+					this.loaderInd++;
 					
 					//we have reached the end of this wave, go onto the next wave and move onto the next wave once player clears this one
-					if (this.levelList.get(this.wave).size() == 0) {
+					if (this.loaderInd == levelWave.size()) {
 						this.wave++;
 						this.unloading = false;
+						levelWave.clear();
+						this.loaderInd = 0;
 					}
 					
 					//we have reached the end of this level, go onto the next level
