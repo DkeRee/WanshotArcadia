@@ -31,7 +31,7 @@ public class WanshotManager {
 	private int level = 0;
 	private int waveCap = 25;
 	private int wave = 0;
-	private int enemiesCap = 5;
+	private int enemiesCap = 4;
 	private boolean unloading = false;
 	private int unloadCounter = 0;
 	private int unloadSpeed;
@@ -109,18 +109,18 @@ public class WanshotManager {
 			tanksToChoose = new TankTypes[2];
 			tanksToChoose[0] = TankTypes.BrownTank;
 			tanksToChoose[1] = TankTypes.GreyTank;
-		} else if (this.level <= 12) {
+		} else if (this.level <= 9) {
 			tanksToChoose = new TankTypes[3];
 			tanksToChoose[0] = TankTypes.BrownTank;
 			tanksToChoose[1] = TankTypes.GreyTank;
 			tanksToChoose[2] = TankTypes.TealTank;
-		} else if (this.level <= 16) {
+		} else if (this.level <= 13) {
 			tanksToChoose = new TankTypes[4];
 			tanksToChoose[0] = TankTypes.BrownTank;
 			tanksToChoose[1] = TankTypes.GreyTank;
 			tanksToChoose[2] = TankTypes.TealTank;
 			tanksToChoose[3] = TankTypes.PinkTank;
-		} else if (this.level <= 25) {
+		} else if (this.level <= 15) {
 			tanksToChoose = new TankTypes[5];
 			tanksToChoose[0] = TankTypes.BrownTank;
 			tanksToChoose[1] = TankTypes.GreyTank;
