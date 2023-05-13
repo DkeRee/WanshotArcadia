@@ -199,7 +199,7 @@ public class WanshotManager {
 			tanksToChoose[1] = TankTypes.GreyTank;
 			tanksToChoose[2] = TankTypes.TealTank;
 			tanksToChoose[3] = TankTypes.PinkTank;
-		} else if (this.level <= 11) {
+		} else if (this.level <= 12) {
 			tanksToChoose = new TankTypes[5];
 			tanksToChoose[0] = TankTypes.BrownTank;
 			tanksToChoose[1] = TankTypes.GreyTank;
