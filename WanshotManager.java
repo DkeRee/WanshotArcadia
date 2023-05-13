@@ -31,11 +31,12 @@ public class WanshotManager {
 	private int level = 0;
 	private int waveCap = 25;
 	private int wave = 0;
-	private int enemiesCap = 6;
+	private int enemiesCap = 8;
 	private boolean unloading = false;
 	private int unloadCounter = 0;
 	private int unloadSpeed;
 	private int loaderInd = 0;
+	private int distImmunity = 350;
 	private ArrayList<ArrayList<TankCache>> levelList = new ArrayList<ArrayList<TankCache>>();
 	
 	public WanshotManager() {
@@ -102,8 +103,7 @@ public class WanshotManager {
 	public TankCache createTank() {
 		//creates tank based off of current level
 		TankTypes[] tanksToChoose = null;
-		int offset = 100;
-		Point randomPoint = new Point((int)(Math.random() * (WanshotModel.WIDTH - offset)) + 20, (int)(Math.random() * (WanshotModel.HEIGHT - offset)) + 20);
+		Point randomPoint = this.getRandomCoords();
 		
 		if (this.level <= 3) {
 			tanksToChoose = new TankTypes[1];
@@ -174,6 +174,19 @@ public class WanshotManager {
 	public int getUnloadSpeed() {
 		int unloadSpeedThreshold = 20;
 		return Math.min(-((unloadSpeedThreshold - this.level)), -20);
+	}
+	
+	public Point getRandomCoords() {
+		Tank player = WanshotModel.tanks.get(0);
+		
+		int offset = 100;
+		Point randomPoint = null;
+		
+		while (randomPoint == null || Parallelogram.getMagnitude(new Point(player.centerX - randomPoint.x, player.centerY - randomPoint.y)) < this.distImmunity) {
+			randomPoint = new Point((int)(Math.random() * (WanshotModel.WIDTH - offset)) + 20, (int)(Math.random() * (WanshotModel.HEIGHT - offset)) + 20);
+		}
+		
+		return randomPoint;
 	}
 	
 	public int getMaxWaves() {

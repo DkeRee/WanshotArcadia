@@ -119,7 +119,7 @@ public class Shell extends Parallelogram {
 	static final int WIDTH = 9;
 	static final int HEIGHT = 6;
 	static final int REGULAR_SHELL_SPEED = 250;
-	static final int MISSLE_SPEED = 700;
+	static final int MISSLE_SPEED = 600;
 	static final int ULTRA_MISSLE_SPEED = 500;
 	static final Color REGULAR_SHELL_COLOR = Color.decode("#D3D3D3");
 	static final Color MISSLE_COLOR = Color.decode("#DE522F");

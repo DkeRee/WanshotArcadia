@@ -9,7 +9,7 @@ public class WanshotModel {
 	static final double deltaTime = 1.0 / 60.0;
 	
 	//Game manager
-	private WanshotManager manager = new WanshotManager();
+	private WanshotManager manager;
 	
 	public static double degreesToRadians(double degree) {
 		return degree * (Math.PI / 180);
@@ -23,6 +23,7 @@ public class WanshotModel {
 	
 	public WanshotModel() {
 		tanks.add(new Player(50, 50));
+		this.manager = new WanshotManager();
 		this.initTiles();
 	}
 	
