@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.awt.*;
 
 enum TankTypes {
 	BrownTank,
@@ -9,6 +10,51 @@ enum TankTypes {
 	GreenTank
 }
 
+class SpawnParticle extends Particle {
+	static final int side = 25;
+	int x;
+	int y;
+	int opacity = 200;
+	int speed = 400;
+	double angle = WanshotModel.degreesToRadians(Math.random() * 360);
+	Color color;
+	
+	public SpawnParticle(int x, int y, Color color) {
+		this.x = x;
+		this.y = y;
+		this.color = color;
+	}
+	
+	public void update() {
+		this.x += this.speed * Math.cos(this.angle) * WanshotModel.deltaTime;
+		this.y += this.speed * Math.sin(this.angle) * WanshotModel.deltaTime;
+		this.opacity -= 200 * WanshotModel.deltaTime;
+		
+		this.speed -= WanshotModel.deltaTime;
+		
+		this.angle += WanshotModel.degreesToRadians(5);
+		this.angle %= 2 * Math.PI;
+		
+		if (this.opacity <= 0) {
+			super.delete = true;
+			return;
+		}
+		
+		this.color = new Color(this.color.getRed(), this.color.getGreen(), this.color.getBlue(), this.opacity);
+	}
+	
+	public void render(Graphics2D ctx) {
+		ctx.rotate(this.angle, this.x + SpawnParticle.side / 2, this.y + SpawnParticle.side / 2);
+		ctx.setColor(this.color);
+		
+		Rectangle p = new Rectangle(this.x, this.y, SpawnParticle.side, SpawnParticle.side);
+		ctx.draw(p);
+		ctx.fill(p);
+		
+		ctx.setTransform(WanshotView.oldTransform);
+	}
+}
+
 class TankCache {
 	private TankTypes type;
 	private Point coords;
@@ -16,6 +62,38 @@ class TankCache {
 	public TankCache(TankTypes type, Point coords) {
 		this.type = type;
 		this.coords = coords;
+	}
+	
+	public void createSpawnParticles() {
+		int centerX = ((int)this.coords.x + Tank.WIDTH / 2) + 14;
+		int centerY = ((int)this.coords.y + Tank.HEIGHT / 2) + 14;
+		Color color = null;
+		
+		switch (this.type) {
+			case BrownTank:
+				color = BrownTank.color;
+				break;
+			case GreyTank:
+				color = GreyTank.color;
+				break;
+			case TealTank:
+				color = TealTank.color;
+				break;
+			case PinkTank:
+				color = PinkTank.color;
+				break;
+			case PurpleTank:
+				color = PurpleTank.color;
+				break;
+			case GreenTank:
+				color = GreenTank.color;
+				break;
+		}
+		
+		for (int i = 0; i < 50; i++) {
+			SpawnParticle p = new SpawnParticle(centerX - SpawnParticle.side / 2, centerY - SpawnParticle.side / 2, color);
+			WanshotModel.particles.add(p);
+		}
 	}
 	
 	public TankTypes getType() {
@@ -112,18 +190,18 @@ public class WanshotManager {
 			tanksToChoose = new TankTypes[2];
 			tanksToChoose[0] = TankTypes.BrownTank;
 			tanksToChoose[1] = TankTypes.GreyTank;
-		} else if (this.level <= 9) {
+		} else if (this.level <= 8) {
 			tanksToChoose = new TankTypes[3];
 			tanksToChoose[0] = TankTypes.BrownTank;
 			tanksToChoose[1] = TankTypes.GreyTank;
 			tanksToChoose[2] = TankTypes.TealTank;
-		} else if (this.level <= 13) {
+		} else if (this.level <= 10) {
 			tanksToChoose = new TankTypes[4];
 			tanksToChoose[0] = TankTypes.BrownTank;
 			tanksToChoose[1] = TankTypes.GreyTank;
 			tanksToChoose[2] = TankTypes.TealTank;
 			tanksToChoose[3] = TankTypes.PinkTank;
-		} else if (this.level <= 15) {
+		} else if (this.level <= 12) {
 			tanksToChoose = new TankTypes[5];
 			tanksToChoose[0] = TankTypes.BrownTank;
 			tanksToChoose[1] = TankTypes.GreyTank;
@@ -168,6 +246,7 @@ public class WanshotManager {
 				break;
 		}
 		
+		cache.createSpawnParticles();
 		WanshotModel.tanks.add(tank);
 	}
 	

@@ -63,7 +63,10 @@ public class WanshotView extends JPanel {
 		}
 		
 		for (int i = 0; i < WanshotModel.particles.size(); i++) {
-			WanshotModel.particles.get(i).render(ctx);
+			Particle particle = WanshotModel.particles.get(i);
+			if (particle != null) {
+				particle.render(ctx);
+			}
 		}
 		
 		for (int i = 0; i < WanshotModel.shells.size(); i++) {
