@@ -41,6 +41,10 @@ public class WanshotScorekeeper {
 		this.purpleTanksKilled = 0;
 		this.greenTanksKilled = 0;
 		this.totalScore = 0;
+		this.menuY = -1507;
+		this.droppingDown = true;
+		this.slidingUp = false;
+		this.droppingVelocity = 78;
 	}
 	
 	public void update() {		
