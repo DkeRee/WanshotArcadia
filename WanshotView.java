@@ -35,18 +35,21 @@ public class WanshotView extends JPanel {
 	    ctx.setRenderingHint(
 	    	         RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
-	    Font font = new Font("monospace", Font.BOLD, 96);
-	    ctx.setFont(font);
-	    ctx.setColor(Color.decode("#FFC97A"));
-		ctx.drawString("WANSHOT", 210, 300);
-		
-	    font = new Font("monospace", Font.BOLD, 70);
-	    ctx.setFont(font);
-		ctx.drawString("Level " + this.model.getManager().getLevel(), 330, 395);
-		
-	    font = new Font("monospace", Font.BOLD, 40);
-	    ctx.setFont(font);
-	    ctx.drawString("Wave " + this.model.getManager().getWave() + "/" + this.model.getManager().getMaxWave(), 365, 470);
+	    
+	    if (this.model.getManager() != null) {
+		    Font font = new Font("monospace", Font.BOLD, 96);
+		    ctx.setFont(font);
+		    ctx.setColor(Color.decode("#FFC97A"));
+			ctx.drawString("WANSHOT", 210, 300);
+			
+		    font = new Font("monospace", Font.BOLD, 70);
+		    ctx.setFont(font);
+			ctx.drawString("Level " + this.model.getManager().getLevel(), 330, 395);
+			
+		    font = new Font("monospace", Font.BOLD, 40);
+		    ctx.setFont(font);
+		    ctx.drawString("Wave " + this.model.getManager().getWave() + "/" + this.model.getManager().getMaxWave(), 365, 470);	
+	    }
 
 		//Render Shadows
 		for (int i = 0; i < WanshotModel.tiles.size(); i++) {
@@ -75,6 +78,10 @@ public class WanshotView extends JPanel {
 				
 		for (int i = 0; i < WanshotModel.tiles.size(); i++) {
 			WanshotModel.tiles.get(i).render(ctx);
+		}
+		
+		if (this.model.getScoreKeeper().shouldUpdate()) {
+			this.model.getScoreKeeper().render(ctx);
 		}
 	}
 }

@@ -1,6 +1,7 @@
 import java.awt.event.*;
 
 public class WanshotController implements MouseListener, MouseMotionListener, KeyListener {
+	static final int ENTER = 10;
 	static final int W = 87;
 	static final int A = 65;
 	static final int S = 83;
@@ -21,6 +22,10 @@ public class WanshotController implements MouseListener, MouseMotionListener, Ke
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
+		if (e.getKeyCode() == WanshotController.ENTER) {
+			this.model.getScoreKeeper().startGame();
+		}
+		
 		if (WanshotModel.isPlayerAlive()) {
 			((Player)WanshotModel.tanks.get(0)).updateKey(e.getKeyCode(), true);
 			

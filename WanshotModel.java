@@ -8,6 +8,9 @@ public class WanshotModel {
 	//Deltatime
 	static final double deltaTime = 1.0 / 60.0;
 	
+	//Score keeper
+	private WanshotScorekeeper scoreKeeper;
+	
 	//Game manager
 	private WanshotManager manager;
 	
@@ -23,7 +26,7 @@ public class WanshotModel {
 	
 	public WanshotModel() {
 		tanks.add(new Player(50, 50));
-		this.manager = new WanshotManager();
+		this.scoreKeeper = new WanshotScorekeeper();
 		this.initTiles();
 	}
 	
@@ -82,12 +85,10 @@ public class WanshotModel {
 		WanshotModel.shells.clear();
 		
 		tanks.add(new Player(50, 50));
-		this.manager = new WanshotManager();
+		this.manager = new WanshotManager(this.scoreKeeper);
 	}
 	
 	public void update() {
-		this.manager.update();
-		
 		for (int i = 0; i < WanshotModel.particles.size(); i++) {
 			Particle particle = WanshotModel.particles.get(i);
 			
@@ -100,6 +101,22 @@ public class WanshotModel {
 			
 			particle.update();
 		}
+		
+		if (this.scoreKeeper.shouldUpdate()) {
+			this.scoreKeeper.update();
+			
+			if (this.scoreKeeper.getResetFlag()) {
+				this.reset();
+				this.scoreKeeper.resetFlagFalsify();
+			}
+			return;
+		}
+		
+		if (this.manager == null) {
+			this.manager = new WanshotManager(this.scoreKeeper);
+		}
+		
+		this.manager.update();
 		
 		for (int i = 0; i < WanshotModel.tanks.size(); i++) {
 			Tank tank = WanshotModel.tanks.get(i);
@@ -126,12 +143,13 @@ public class WanshotModel {
 			
 			shell.update();
 		}
-		
-		if (!WanshotModel.isPlayerAlive())
-			this.reset();
 	}
 	
 	public WanshotManager getManager() {
 		return this.manager;
+	}
+	
+	public WanshotScorekeeper getScoreKeeper() {
+		return this.scoreKeeper;
 	}
 }

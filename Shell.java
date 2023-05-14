@@ -251,6 +251,7 @@ public class Shell extends Parallelogram {
 				
 				tank.createExplosion();
 				tank.delete = true;
+				
 				break;
 			}
 		}

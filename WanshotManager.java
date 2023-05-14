@@ -105,6 +105,7 @@ class TankCache {
 }
 
 public class WanshotManager {
+	private WanshotScorekeeper scoreKeeper;
 	private int level = 0;
 	private int waveCap = 25;
 	private int wave = 0;
@@ -115,11 +116,13 @@ public class WanshotManager {
 	private int loaderInd = 0;
 	private int distImmunity = 350;
 	private TankCache[][] levelList;
+	private TankCache[] prevWave;
 	
-	public WanshotManager() {
+	public WanshotManager(WanshotScorekeeper scoreKeeper) {
+		this.scoreKeeper = scoreKeeper;
 		this.levelList = this.populateLevelList();
 	}
-	
+		
 	public TankCache[][] populateLevelList() {
 		TankCache[][] list = new TankCache[this.getMaxWaves()][0];
 		
@@ -139,6 +142,12 @@ public class WanshotManager {
 	public void update() {
 		if (WanshotModel.isPlayerAlive()) {
 			if (WanshotModel.onlyPlayerAlive() && !this.unloading) {
+				//update score by end of each wave						
+				if (this.prevWave != null) {
+					this.scoreKeeper.updateKills(this.prevWave);
+				}
+				
+				this.prevWave = this.levelList[this.wave].clone();
 				this.unloading = true;
 				this.unloadSpeed = this.getUnloadSpeed();
 			}
@@ -162,7 +171,7 @@ public class WanshotManager {
 					if (this.loaderInd == levelWave.length) {
 						this.wave++;
 						this.unloading = false;
-						this.loaderInd = 0;
+						this.loaderInd = 0;						
 					}
 					
 					//we have reached the end of this level, go onto the next level
