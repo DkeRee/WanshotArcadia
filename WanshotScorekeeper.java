@@ -162,7 +162,15 @@ public class WanshotScorekeeper {
 		ctx.drawString("PRESS", this.menuX + 355, this.menuY + 280);
 		ctx.drawString("ENTER", this.menuX + 355, this.menuY + 360);
 		
-		ctx.drawString("Total Score: " + this.totalScore, this.menuX + 200, this.menuY + 520);
+		ctx.drawString("Total Score: " + this.totalScore, this.menuX +  2 * this.numberOfDigitsInNumber(this.totalScore), this.menuY + 520);
+	}
+	
+	public int numberOfDigitsInNumber(int num) {
+		if (num < 10) {
+			return 1;
+		}
+		
+		return 1 + this.numberOfDigitsInNumber(num / 10);
 	}
 	
 	public void startGame() {

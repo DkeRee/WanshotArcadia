@@ -39,7 +39,7 @@ public class WanshotView extends JPanel {
 	    if (this.model.getManager() != null) {
 		    Font font = new Font("monospace", Font.BOLD, 96);
 		    ctx.setFont(font);
-		    ctx.setColor(Color.decode("#FFC97A"));
+		    ctx.setColor(Color.decode("#ffaa2e"));
 			ctx.drawString("WANSHOT", 210, 300);
 			
 		    font = new Font("monospace", Font.BOLD, 70);
