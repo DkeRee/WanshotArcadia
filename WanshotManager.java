@@ -280,7 +280,7 @@ public class WanshotManager {
 	}
 	
 	public int getMaxWaveEnemies(int waveCount) {
-		int levelOffset = this.level + (waveCount * 2);
+		int levelOffset = (this.level * 2) + (waveCount * 2);
 		return Math.min((int)(Math.random() * levelOffset) + 1, this.enemiesCap);
 	}
 	
