@@ -404,10 +404,16 @@ public class Shell extends Parallelogram {
 	public void render(Graphics2D ctx) {
 		ctx.rotate(this.angle, this.centerX, this.centerY);
 		
-		ctx.setColor(this.color);
 		Rectangle body = new Rectangle((int)this.x, (int)this.y, Shell.WIDTH, Shell.HEIGHT);
 		
+		if (this.speed == Shell.REGULAR_SHELL_SPEED) {
+			ctx.setStroke(new BasicStroke(3));
+			ctx.setColor(WanshotView.SHADOW);
+		}
+		
 		ctx.draw(body);
+		
+		ctx.setColor(this.color);
 		ctx.fill(body);
 		
 		ctx.setTransform(WanshotView.oldTransform);
