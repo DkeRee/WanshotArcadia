@@ -7,8 +7,8 @@ class TankParticle extends Particle {
 	int x;
 	int y;
 	double angle = WanshotModel.degreesToRadians(Math.random() * 360);
-	int opacity = 100;
-	int speed = 300;
+	int opacity = 200;
+	int speed = 3000;
 	Color color;
 	
 	public TankParticle(int x, int y, Color tankColor) {
@@ -29,6 +29,8 @@ class TankParticle extends Particle {
 		this.y += this.speed * Math.sin(this.angle) * WanshotModel.deltaTime;
 		this.opacity -= 300 * WanshotModel.deltaTime;
 		
+		this.speed /= 2;
+		
 		if (this.opacity <= 0) {
 			super.delete = true;
 			return;
@@ -38,15 +40,102 @@ class TankParticle extends Particle {
 	}
 	
 	public void render(Graphics2D ctx) {
+		int randomBump = (int)(Math.random() * 10);
+		
 		ctx.rotate(this.angle, this.x + TankParticle.side / 2, this.y + TankParticle.side / 2);
 		ctx.setColor(this.color);
 		
-		Rectangle p = new Rectangle(this.x, this.y, TankParticle.side, TankParticle.side);
+		Rectangle p = new Rectangle(this.x, this.y, TankParticle.side + randomBump, TankParticle.side + randomBump);
 		ctx.draw(p);
 		ctx.fill(p);
 		
 		ctx.setTransform(WanshotView.oldTransform);
 	}
+}
+
+class Grave extends Particle {
+	static final int WIDTH = 10;
+	static final int HEIGHT = 30;
+	int opacity = 200;
+	Color color;
+	int x;
+	int y;
+	
+	public Grave(int x, int y, Color color) {
+		this.x = x;
+		this.y = y;
+		this.color = color;
+	}
+	
+	public void update() {
+		this.opacity -= WanshotModel.deltaTime / 20;
+		
+		if (this.opacity <= 0) {
+			super.delete = true;
+			return;
+		}
+		
+		this.color = new Color(this.color.getRed(), this.color.getGreen(), this.color.getBlue(), this.opacity);
+	}
+	
+	public void render(Graphics2D ctx) {
+		double angleLeanRight = Math.PI / 4;
+		double angleLeanLeft = Math.PI / 2;
+		
+		ctx.setColor(this.color);
+		
+		ctx.rotate(angleLeanRight, this.x + Grave.WIDTH / 2, this.y + Grave.HEIGHT / 2);
+		Rectangle p1 = new Rectangle(this.x, this.y, Grave.WIDTH, Grave.HEIGHT);
+		ctx.draw(p1);
+		ctx.fill(p1);
+		
+		ctx.rotate(angleLeanLeft, this.x + Grave.WIDTH / 2, this.y + Grave.HEIGHT / 2);
+		Rectangle p2 = new Rectangle(this.x, this.y, Grave.WIDTH, Grave.HEIGHT);
+		ctx.draw(p2);
+		ctx.fill(p2);
+		ctx.setTransform(WanshotView.oldTransform);
+	}
+}
+
+class Track extends Particle {
+	static final int WIDTH = 4;
+	static final int HEIGHT = 7;
+	int opacity = 200;
+	Color color = Color.decode("#7B3F00");
+	int x;
+	int y;
+	double angle;
+	
+	public Track(int x, int y, double angle) {
+		this.x = x;
+		this.y = y;
+		this.angle = angle;
+	}
+	
+	public void update() {
+		this.opacity -= WanshotModel.deltaTime;
+		
+		if (this.opacity <= 0) {
+			super.delete = true;
+			return;
+		}
+		
+		this.color = new Color(this.color.getRed(), this.color.getGreen(), this.color.getBlue(), this.opacity);
+	}
+	
+	public void render(Graphics2D ctx) {
+		ctx.rotate(this.angle, this.x + Track.WIDTH / 2, this.y + Track.HEIGHT / 2);
+		ctx.setColor(this.color);
+		
+		Rectangle p1 = new Rectangle(this.x, (this.y) - Track.HEIGHT, Track.WIDTH, Track.HEIGHT);
+		ctx.draw(p1);
+		ctx.fill(p1);
+		
+		Rectangle p2 = new Rectangle(this.x, (this.y) + Track.HEIGHT, Track.WIDTH, Track.HEIGHT);
+		ctx.draw(p2);
+		ctx.fill(p2);
+		
+		ctx.setTransform(WanshotView.oldTransform);	}
 }
 
 public class Tank extends Parallelogram {
@@ -75,6 +164,8 @@ public class Tank extends Parallelogram {
 	int shellShot = 0;
 	int shellCooldown;
 	int shellCooldownCount = 0;
+	int trackCooldown = -5;
+	int trackCooldownCount = 0;
 	Color color;
 	Color turretColor;
 	Color sideColor;
@@ -144,10 +235,18 @@ public class Tank extends Parallelogram {
 		}
 	}
 	
+	public void createTrack() {
+		Track p = new Track((int)this.centerX - Track.WIDTH / 2, (int)this.centerY - Track.HEIGHT, this.angle);
+		WanshotModel.particles.add(p);
+	}
+	
 	public void createExplosion() {
-		for (int i = 0; i < 100; i++) {
-			TankParticle p = new TankParticle((int)this.centerX - TankParticle.side / 2, (int)this.centerY - TankParticle.side / 2, this.color);
-			WanshotModel.particles.add(p);
+		Grave p = new Grave((int)this.centerX - Grave.WIDTH / 2, (int)this.centerY - Grave.HEIGHT / 2, this.color);
+		WanshotModel.particles.add(p);
+		
+		for (int i = 0; i < 50; i++) {
+			TankParticle tp = new TankParticle((int)this.centerX - TankParticle.side / 2, (int)this.centerY - TankParticle.side / 2, this.color);
+			WanshotModel.particles.add(tp);
 		}
 	}
 	
@@ -173,6 +272,13 @@ public class Tank extends Parallelogram {
 						
 		if (this.shellCooldownCount < 0) {
 			this.shellCooldownCount++;
+		}
+		
+		if (this.trackCooldownCount < 0) {
+			this.trackCooldownCount++;
+		} else {
+			this.trackCooldownCount = this.trackCooldown;
+			this.createTrack();
 		}
 		
 		if (this.stunCount < 0) {

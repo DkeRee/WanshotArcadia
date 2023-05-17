@@ -124,7 +124,7 @@ public class Shell extends Parallelogram {
 	static final Color REGULAR_SHELL_COLOR = Color.decode("#D3D3D3");
 	static final Color MISSLE_COLOR = Color.decode("#DE522F");
 	static final Color ULTRA_MISSLE_COLOR = Color.decode("#FFBF00");
-	static final int MISSLE_PARTICLE_CAP = -2;
+	static final int MISSLE_PARTICLE_CAP = 0;
 	static final int ULTRA_MISSLE_PARTICLE_CAP = -1;
 	
 	//SHELL INSTANCE INFO
