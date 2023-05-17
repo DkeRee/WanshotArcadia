@@ -47,7 +47,7 @@ public class Bot extends Tank {
 		super(
 				x,
 				y,
-				0,
+				Bot.getRandSpawnAngle(),
 				speed,
 				rotationSpeed,
 				stun,
@@ -69,6 +69,28 @@ public class Bot extends Tank {
 		this.turretArcSize = turretArcSize;
 		this.shellType = shellType;
 		this.shellBounceAmount = shellBounceAmount;
+	}
+	
+	public static double getRandSpawnAngle() {
+		int chance = (int)(Math.random() * 4);
+		double angle = 0;
+		
+		switch (chance) {
+			case 0:
+				angle = 0;
+				break;
+			case 1:
+				angle = Math.PI / 2;
+				break;
+			case 2:
+				angle = Math.PI;
+				break;
+			case 3:
+				angle = WanshotModel.degreesToRadians(270);
+				break;
+		}
+		
+		return angle;
 	}
 	
 	public boolean dodgeShells() {
