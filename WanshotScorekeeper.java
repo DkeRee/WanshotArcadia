@@ -15,16 +15,20 @@ public class WanshotScorekeeper {
 	
 	private final int brownTank = 1;
 	private final int greyTank = 2;
-	private final int tealTank = 3;
-	private final int pinkTank = 4;
-	private final int purpleTank = 5;
-	private final int greenTank = 6;
+	private final int yellowTank = 3;
+	private final int tealTank = 4;
+	private final int pinkTank = 5;
+	private final int whiteTank = 6;
+	private final int purpleTank = 7;
+	private final int greenTank = 8;
 	private int totalScore = 0;
 	
 	private int brownTanksKilled = 0;
 	private int greyTanksKilled = 0;
+	private int yellowTanksKilled = 0;
 	private int tealTanksKilled = 0;
 	private int pinkTanksKilled = 0;
+	private int whiteTanksKilled = 0;
 	private int purpleTanksKilled = 0;
 	private int greenTanksKilled = 0;
 	
@@ -36,8 +40,10 @@ public class WanshotScorekeeper {
 	public void reset() {
 		this.brownTanksKilled = 0;
 		this.greyTanksKilled = 0;
+		this.yellowTanksKilled = 0;
 		this.tealTanksKilled = 0;
 		this.pinkTanksKilled = 0;
+		this.whiteTanksKilled = 0;
 		this.purpleTanksKilled = 0;
 		this.greenTanksKilled = 0;
 		this.totalScore = 0;
@@ -82,6 +88,10 @@ public class WanshotScorekeeper {
 					this.greyTanksKilled++;
 					this.totalScore += this.greyTank;
 					break;
+				case YellowTank:
+					this.yellowTanksKilled++;
+					this.totalScore += this.yellowTank;
+					break;
 				case TealTank:
 					this.tealTanksKilled++;
 					this.totalScore += this.tealTank;
@@ -89,6 +99,10 @@ public class WanshotScorekeeper {
 				case PinkTank:
 					this.pinkTanksKilled++;
 					this.totalScore += this.pinkTank;
+					break;
+				case WhiteTank:
+					this.whiteTanksKilled++;
+					this.totalScore += this.whiteTank;
 					break;
 				case PurpleTank:
 					this.purpleTanksKilled++;
@@ -115,22 +129,28 @@ public class WanshotScorekeeper {
 	    Font font = new Font("monospace", Font.BOLD, 80);
 	    ctx.setFont(font);
 	    ctx.setColor(Color.decode("#ffaa2e"));
-		ctx.drawString("WANSHOT", this.menuX + 150, this.menuY + 160);
+		ctx.drawString("WANSHOT", this.menuX + 150, this.menuY + 110);
 	
 	    font = new Font("monospace", Font.BOLD, 40);
 	    ctx.setFont(font);
 		
-	    Rectangle brown = new Rectangle(this.menuX + 190, this.menuY + 200, 35, 30);
+	    Rectangle brown = new Rectangle(this.menuX + 190, this.menuY + 160, 35, 30);
 		ctx.setColor(BrownTank.color);
 		
-		ctx.drawString("x " + this.brownTanksKilled, this.menuX + 250, this.menuY + 225);
+		ctx.drawString("x " + this.brownTanksKilled, this.menuX + 250, this.menuY + 185);
 		ctx.fill(brown);
 		
-		Rectangle grey = new Rectangle(this.menuX + 190, this.menuY + 240, 35, 30);
+		Rectangle grey = new Rectangle(this.menuX + 190, this.menuY + 200, 35, 30);
 		ctx.setColor(GreyTank.color);
 		
-		ctx.drawString("x " + this.greyTanksKilled, this.menuX + 250, this.menuY + 265);
+		ctx.drawString("x " + this.greyTanksKilled, this.menuX + 250, this.menuY + 225);
 		ctx.fill(grey);
+		
+		Rectangle yellow = new Rectangle(this.menuX + 190, this.menuY + 240, 35, 30);
+		ctx.setColor(YellowTank.color);
+		
+		ctx.drawString("x " + this.yellowTanksKilled, this.menuX + 250, this.menuY + 265);
+		ctx.fill(yellow);
 		
 		Rectangle teal = new Rectangle(this.menuX + 190, this.menuY + 280, 35, 30);
 		ctx.setColor(TealTank.color);
@@ -144,16 +164,22 @@ public class WanshotScorekeeper {
 		ctx.drawString("x " + this.pinkTanksKilled, this.menuX + 250, this.menuY + 345);
 		ctx.fill(pink);
 		
-		Rectangle purple = new Rectangle(this.menuX + 190, this.menuY + 360, 35, 30);
+		Rectangle white = new Rectangle(this.menuX + 190, this.menuY + 360, 35, 30);
+		ctx.setColor(WhiteTank.color);
+		
+		ctx.drawString("x " + this.whiteTanksKilled, this.menuX + 250, this.menuY + 385);
+		ctx.fill(white);
+		
+		Rectangle purple = new Rectangle(this.menuX + 190, this.menuY + 400, 35, 30);
 		ctx.setColor(PurpleTank.color);
 		
-		ctx.drawString("x " + this.purpleTanksKilled, this.menuX + 250, this.menuY + 385);
+		ctx.drawString("x " + this.purpleTanksKilled, this.menuX + 250, this.menuY + 425);
 		ctx.fill(purple);
 		
-		Rectangle green = new Rectangle(this.menuX + 190, this.menuY + 400, 35, 30);
+		Rectangle green = new Rectangle(this.menuX + 190, this.menuY + 440, 35, 30);
 		ctx.setColor(GreenTank.color);
 		
-		ctx.drawString("x " + this.greenTanksKilled, this.menuX + 250, this.menuY + 425);
+		ctx.drawString("x " + this.greenTanksKilled, this.menuX + 250, this.menuY + 465);
 		ctx.fill(green);
 		
 	    font = new Font("monospace", Font.PLAIN, 50);
@@ -162,7 +188,7 @@ public class WanshotScorekeeper {
 		ctx.drawString("PRESS", this.menuX + 355, this.menuY + 280);
 		ctx.drawString("ENTER", this.menuX + 355, this.menuY + 360);
 		
-		ctx.drawString("Total Score: " + this.totalScore, this.menuX + 200, this.menuY + 520);
+		ctx.drawString("Total Score: " + this.totalScore, this.menuX + 200, this.menuY + 540);
 	}
 	
 	public void startGame() {

@@ -3,8 +3,10 @@ import java.awt.*;
 enum TankTypes {
 	BrownTank,
 	GreyTank,
+	YellowTank,
 	TealTank,
 	PinkTank,
+	WhiteTank,
 	PurpleTank,
 	GreenTank
 }
@@ -75,11 +77,17 @@ class TankCache {
 			case GreyTank:
 				color = GreyTank.color;
 				break;
+			case YellowTank:
+				color = YellowTank.color;
+				break;
 			case TealTank:
 				color = TealTank.color;
 				break;
 			case PinkTank:
 				color = PinkTank.color;
+				break;
+			case WhiteTank:
+				color = WhiteTank.color;
 				break;
 			case PurpleTank:
 				color = PurpleTank.color;
@@ -114,7 +122,7 @@ public class WanshotManager {
 	private int unloadCounter = 0;
 	private int unloadSpeed;
 	private int loaderInd = 0;
-	private int distImmunity = 380;
+	private int distImmunity = 420;
 	private TankCache[][] levelList;
 	private TankCache[] prevWave;
 	
@@ -190,39 +198,58 @@ public class WanshotManager {
 		TankTypes[] tanksToChoose = null;
 		Point randomPoint = this.getRandomCoords();
 		
-		if (this.level <= 3) {
+		if (this.level < 3) {
 			tanksToChoose = new TankTypes[1];
 			tanksToChoose[0] = TankTypes.BrownTank;
-		} else if (this.level <= 6) {
+		} else if (this.level <= 3) {
 			tanksToChoose = new TankTypes[2];
 			tanksToChoose[0] = TankTypes.BrownTank;
 			tanksToChoose[1] = TankTypes.GreyTank;
-		} else if (this.level <= 8) {
+		} else if (this.level <= 5) {
 			tanksToChoose = new TankTypes[3];
 			tanksToChoose[0] = TankTypes.BrownTank;
 			tanksToChoose[1] = TankTypes.GreyTank;
-			tanksToChoose[2] = TankTypes.TealTank;
-		} else if (this.level <= 9) {
+			tanksToChoose[2] = TankTypes.YellowTank;
+		} else if (this.level <= 6) {
 			tanksToChoose = new TankTypes[4];
 			tanksToChoose[0] = TankTypes.BrownTank;
 			tanksToChoose[1] = TankTypes.GreyTank;
-			tanksToChoose[2] = TankTypes.TealTank;
-			tanksToChoose[3] = TankTypes.PinkTank;
-		} else if (this.level <= 11) {
+			tanksToChoose[2] = TankTypes.YellowTank;
+			tanksToChoose[3] = TankTypes.TealTank;
+		} else if (this.level <= 7) {
 			tanksToChoose = new TankTypes[5];
 			tanksToChoose[0] = TankTypes.BrownTank;
 			tanksToChoose[1] = TankTypes.GreyTank;
-			tanksToChoose[2] = TankTypes.TealTank;
-			tanksToChoose[3] = TankTypes.PinkTank;
-			tanksToChoose[4] = TankTypes.PurpleTank;
-		} else {
+			tanksToChoose[2] = TankTypes.YellowTank;
+			tanksToChoose[3] = TankTypes.TealTank;
+			tanksToChoose[4] = TankTypes.PinkTank;
+		} else if (this.level <= 8) {
 			tanksToChoose = new TankTypes[6];
 			tanksToChoose[0] = TankTypes.BrownTank;
 			tanksToChoose[1] = TankTypes.GreyTank;
-			tanksToChoose[2] = TankTypes.TealTank;
-			tanksToChoose[3] = TankTypes.PinkTank;
-			tanksToChoose[4] = TankTypes.PurpleTank;
-			tanksToChoose[5] = TankTypes.GreenTank;	
+			tanksToChoose[2] = TankTypes.YellowTank;
+			tanksToChoose[3] = TankTypes.TealTank;
+			tanksToChoose[4] = TankTypes.PinkTank;
+			tanksToChoose[5] = TankTypes.WhiteTank;
+		} else if (this.level <= 9) {
+			tanksToChoose = new TankTypes[7];
+			tanksToChoose[0] = TankTypes.BrownTank;
+			tanksToChoose[1] = TankTypes.GreyTank;
+			tanksToChoose[2] = TankTypes.YellowTank;
+			tanksToChoose[3] = TankTypes.TealTank;
+			tanksToChoose[4] = TankTypes.PinkTank;
+			tanksToChoose[5] = TankTypes.WhiteTank;
+			tanksToChoose[6] = TankTypes.PurpleTank;
+		} else {
+			tanksToChoose = new TankTypes[8];
+			tanksToChoose[0] = TankTypes.BrownTank;
+			tanksToChoose[1] = TankTypes.GreyTank;
+			tanksToChoose[2] = TankTypes.YellowTank;
+			tanksToChoose[3] = TankTypes.TealTank;
+			tanksToChoose[4] = TankTypes.PinkTank;
+			tanksToChoose[5] = TankTypes.WhiteTank;
+			tanksToChoose[6] = TankTypes.PurpleTank;
+			tanksToChoose[7] = TankTypes.GreenTank;	
 		}
 		
 		return new TankCache(tanksToChoose[(int)(Math.random() * tanksToChoose.length)], randomPoint);
@@ -239,11 +266,17 @@ public class WanshotManager {
 			case GreyTank:
 				tank = new GreyTank((int)coords.x, (int)coords.y);
 				break;
+			case YellowTank:
+				tank = new YellowTank((int)coords.x, (int)coords.y);
+				break;
 			case TealTank:
 				tank = new TealTank((int)coords.x, (int)coords.y);
 				break;
 			case PinkTank:
 				tank = new PinkTank((int)coords.x, (int)coords.y);
+				break;
+			case WhiteTank:
+				tank = new WhiteTank((int)coords.x, (int)coords.y);
 				break;
 			case PurpleTank:
 				tank = new PurpleTank((int)coords.x, (int)coords.y);
@@ -280,7 +313,7 @@ public class WanshotManager {
 	}
 	
 	public int getMaxWaveEnemies(int waveCount) {
-		int levelOffset = (this.level * 2) + (waveCount * 2);
+		int levelOffset = ((int)((double)this.level * (3.0 / 2.0))) + (waveCount);
 		return Math.min((int)(Math.random() * levelOffset) + 1, this.enemiesCap);
 	}
 	

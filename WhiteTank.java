@@ -1,10 +1,10 @@
-import java.awt.Color;
+import java.awt.*;
 
-public class PinkTank extends Bot {
-	static final int speed = 140;
-	static final double rotationSpeed = WanshotModel.degreesToRadians(520);
+public class WhiteTank extends Bot {
+	static final int speed = 100;
+	static final double rotationSpeed = WanshotModel.degreesToRadians(500);
 	static final int stun = -5;
-	static final int shellCap = 3;
+	static final int shellCap = 4;
 	static final int shellCooldown = -20;
 	static final int frm = -3;
 	static final double stopAndTurn = WanshotModel.degreesToRadians(30);
@@ -16,11 +16,11 @@ public class PinkTank extends Bot {
 	static final double turretArcSize = WanshotModel.degreesToRadians(95);
 	static final int shellType = Shell.REGULAR_SHELL_SPEED;
 	static final int shellBounceAmount = 1;
-	static final Color color = Color.decode("#B82A55");
-	static final Color turretColor = Color.decode("#B02951");
+	static final Color color = Color.decode("#DBDBDB");
+	static final Color turretColor = Color.decode("#CFCFCF");
 	static final Color sideColor = Color.decode("#B0896B");
 	
-	public PinkTank(int x, int y) {
+	public WhiteTank(int x, int y) {
 		super(
 			x,
 			y,
@@ -44,4 +44,6 @@ public class PinkTank extends Bot {
 			sideColor
 		);
 	}
+	
+	public void render(Graphics2D ctx) {}
 }
