@@ -1,10 +1,12 @@
-import java.awt.Color;
+import java.awt.*;
 
 public class Player extends Tank {	
 	private boolean W = false;
 	private boolean A = false;
 	private boolean S = false;
 	private boolean D = false;
+	
+	private Color headlightColor = new Color(254, 231, 92, 100);
 	
 	private int mouseX = WanshotModel.WIDTH / 2;
 	private int mouseY = WanshotModel.HEIGHT / 2;
@@ -75,5 +77,12 @@ public class Player extends Tank {
 	public void updateMouseCoords(int x, int y) {
 		this.mouseX = x;
 		this.mouseY = y;
+	}
+	
+	public void render(Graphics2D ctx) {
+		ctx.setColor(this.headlightColor);
+		ctx.fillOval((int)(this.centerX + Math.cos(super.angle) * 20) - Tank.HEIGHT / 2, (int)(this.centerY + Math.sin(super.angle) * 20) - Tank.HEIGHT / 2, Tank.HEIGHT, Tank.HEIGHT);
+		
+		super.render(ctx);
 	}
 }
