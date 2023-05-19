@@ -29,6 +29,8 @@ public class WanshotController implements MouseListener, MouseMotionListener, Ke
 		if (WanshotModel.isPlayerAlive()) {
 			((Player)WanshotModel.tanks.get(0)).updateKey(e.getKeyCode(), true);
 			
+			/*
+			 * for debug purposes
 			switch (e.getKeyCode()) {
 			case 49:
 				WanshotModel.tanks.add(new BrownTank(400, 400));
@@ -55,6 +57,7 @@ public class WanshotController implements MouseListener, MouseMotionListener, Ke
 				WanshotModel.tanks.add(new WhiteTank(400, 400));
 				break;
 			}
+			*/
 		}
 	}
 
