@@ -6,14 +6,15 @@ class TankParticle extends Particle {
 	static final int side = 20;
 	int x;
 	int y;
+	int speed;
 	double angle = WanshotModel.degreesToRadians(Math.random() * 360);
 	int opacity = 200;
-	int speed = 3000;
 	Color color;
 	
-	public TankParticle(int x, int y, Color tankColor) {
+	public TankParticle(int x, int y, Color tankColor, int speed) {
 		this.x = x;
 		this.y = y;
+		this.speed = speed;
 		
 		int ind = (int)(Math.random() * (this.possibleColors.length + 1));
 				
@@ -245,9 +246,25 @@ public class Tank extends Parallelogram {
 		WanshotModel.particles.add(p);
 		
 		for (int i = 0; i < 50; i++) {
-			TankParticle tp = new TankParticle((int)this.centerX - TankParticle.side / 2, (int)this.centerY - TankParticle.side / 2, this.color);
+			TankParticle tp = new TankParticle((int)this.centerX - TankParticle.side / 2, (int)this.centerY - TankParticle.side / 2, this.color, this.getExplosionType());
 			WanshotModel.particles.add(tp);
 		}
+	}
+	
+	public int getExplosionType() {
+		if (this instanceof BrownTank) {
+			return 1800;
+		}
+		
+		if (this instanceof GreyTank) {
+			return 2200;
+		}
+		
+		if (this instanceof YellowTank) {
+			return 2600;
+		}
+		
+		return 3000;
 	}
 	
 	public boolean canShoot() {
@@ -269,16 +286,19 @@ public class Tank extends Parallelogram {
 	
 	public void update() {
 		super.update((int)this.x, (int)this.y, this.angle);
-						
+								
 		if (this.shellCooldownCount < 0) {
 			this.shellCooldownCount++;
 		}
 		
-		if (this.trackCooldownCount < 0) {
-			this.trackCooldownCount++;
-		} else {
-			this.trackCooldownCount = this.trackCooldown;
-			this.createTrack();
+		//only create tracks for tanks that move
+		if (!(this instanceof BrownTank) && !(this instanceof GreenTank)) {
+			if (this.trackCooldownCount < 0) {
+				this.trackCooldownCount++;
+			} else {
+				this.trackCooldownCount = this.trackCooldown;
+				this.createTrack();
+			}
 		}
 		
 		if (this.stunCount < 0) {
