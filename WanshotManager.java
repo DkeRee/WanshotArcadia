@@ -122,7 +122,7 @@ public class WanshotManager {
 	private int unloadCounter = 0;
 	private int unloadSpeed;
 	private int loaderInd = 0;
-	private int distImmunity = 420;
+	private int distImmunity = 430;
 	private TankCache[][] levelList;
 	private TankCache[] prevWave;
 	
@@ -309,11 +309,11 @@ public class WanshotManager {
 	}
 	
 	public int getMaxWaves() {
-		return Math.min((int)(Math.random() * this.level * (4.0 / 3.0)) + 1, this.waveCap);
+		return Math.min((int)(Math.random() * this.level) + 1, this.waveCap);
 	}
 	
 	public int getMaxWaveEnemies(int waveCount) {
-		int levelOffset = ((int)((double)this.level * (4.0 / 3.0))) + (waveCount);
+		int levelOffset = ((int)((double)this.level * (5.0 / 4.0))) + (waveCount);
 		return Math.min((int)(Math.random() * levelOffset) + 1, this.enemiesCap);
 	}
 	
