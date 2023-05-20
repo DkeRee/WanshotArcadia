@@ -115,9 +115,9 @@ class TankCache {
 public class WanshotManager {
 	private WanshotScorekeeper scoreKeeper;
 	private int level = 0;
-	private int waveCap = 6;
+	private int waveCap = 5;
 	private int wave = 0;
-	private int enemiesCap = 8;
+	private int enemiesCap = 6;
 	private boolean unloading = false;
 	private int unloadCounter = 0;
 	private int unloadSpeed;
@@ -205,25 +205,25 @@ public class WanshotManager {
 			tanksToChoose = new TankTypes[2];
 			tanksToChoose[0] = TankTypes.BrownTank;
 			tanksToChoose[1] = TankTypes.GreyTank;
-		} else if (this.level <= 6) {
+		} else if (this.level <= 5) {
 			tanksToChoose = new TankTypes[3];
 			tanksToChoose[0] = TankTypes.BrownTank;
 			tanksToChoose[1] = TankTypes.GreyTank;
 			tanksToChoose[2] = TankTypes.YellowTank;
-		} else if (this.level <= 7) {
+		} else if (this.level <= 6) {
 			tanksToChoose = new TankTypes[4];
 			tanksToChoose[0] = TankTypes.BrownTank;
 			tanksToChoose[1] = TankTypes.GreyTank;
 			tanksToChoose[2] = TankTypes.YellowTank;
 			tanksToChoose[3] = TankTypes.TealTank;
-		} else if (this.level <= 8) {
+		} else if (this.level <= 7) {
 			tanksToChoose = new TankTypes[5];
 			tanksToChoose[0] = TankTypes.BrownTank;
 			tanksToChoose[1] = TankTypes.GreyTank;
 			tanksToChoose[2] = TankTypes.YellowTank;
 			tanksToChoose[3] = TankTypes.TealTank;
 			tanksToChoose[4] = TankTypes.PinkTank;
-		} else if (this.level <= 9) {
+		} else if (this.level <= 8) {
 			tanksToChoose = new TankTypes[6];
 			tanksToChoose[0] = TankTypes.BrownTank;
 			tanksToChoose[1] = TankTypes.GreyTank;
@@ -231,7 +231,7 @@ public class WanshotManager {
 			tanksToChoose[3] = TankTypes.TealTank;
 			tanksToChoose[4] = TankTypes.PinkTank;
 			tanksToChoose[5] = TankTypes.WhiteTank;
-		} else if (this.level <= 10) {
+		} else if (this.level <= 9) {
 			tanksToChoose = new TankTypes[7];
 			tanksToChoose[0] = TankTypes.BrownTank;
 			tanksToChoose[1] = TankTypes.GreyTank;
@@ -313,7 +313,7 @@ public class WanshotManager {
 	}
 	
 	public int getMaxWaveEnemies(int waveCount) {
-		int levelOffset = ((int)((double)this.level * (5.0 / 4.0))) + (waveCount);
+		int levelOffset = (this.level) + (waveCount);
 		return Math.min((int)(Math.random() * levelOffset) + 1, this.enemiesCap);
 	}
 	
