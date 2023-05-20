@@ -5,7 +5,7 @@ public class YellowTank extends Bot {
 	static final double rotationSpeed = WanshotModel.degreesToRadians(500);
 	static final int stun = -5;
 	static final int shellCap = 2;
-	static final int shellCooldown = -50;
+	static final int shellCooldown = -80;
 	static final int frm = -3;
 	static final double stopAndTurn = WanshotModel.degreesToRadians(30);
 	static final double uTurn = WanshotModel.degreesToRadians(170);
