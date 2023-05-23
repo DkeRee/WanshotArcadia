@@ -158,6 +158,8 @@ public class WanshotManager {
 				this.prevWave = this.levelList[this.wave].clone();
 				this.unloading = true;
 				this.unloadSpeed = this.getUnloadSpeed();
+				
+				WanshotMain.playSound("newRound.wav");
 			}
 			
 			if (this.unloading) {
@@ -277,6 +279,7 @@ public class WanshotManager {
 				break;
 			case WhiteTank:
 				tank = new WhiteTank((int)coords.x, (int)coords.y);
+				WanshotMain.playSound("superpower.wav");
 				break;
 			case PurpleTank:
 				tank = new PurpleTank((int)coords.x, (int)coords.y);
@@ -288,6 +291,8 @@ public class WanshotManager {
 		
 		cache.createSpawnParticles();
 		WanshotModel.tanks.add(tank);
+		
+		WanshotMain.playSound("tankSpawn.wav");
 	}
 	
 	public int getUnloadSpeed() {

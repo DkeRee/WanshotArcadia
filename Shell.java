@@ -158,15 +158,18 @@ public class Shell extends Parallelogram {
 		
 		switch (speed) {
 			case Shell.REGULAR_SHELL_SPEED:
+				WanshotMain.playSound("normalShoot.wav");
 				this.color = Shell.REGULAR_SHELL_COLOR;
 				this.trailRate = -5;
 				break;
 			case Shell.MISSLE_SPEED:
+				WanshotMain.playSound("missleShoot.wav");
 				this.color = Shell.MISSLE_COLOR;
 				this.particleCap = Shell.MISSLE_PARTICLE_CAP;
 				this.trailRate = -2;
 				break;
 			case Shell.ULTRA_MISSLE_SPEED:
+				WanshotMain.playSound("ultraMissleShoot.wav");
 				this.color = Shell.ULTRA_MISSLE_COLOR;
 				this.particleCap = Shell.ULTRA_MISSLE_PARTICLE_CAP;
 				this.trailRate = -1;
@@ -252,6 +255,11 @@ public class Shell extends Parallelogram {
 				tank.createExplosion();
 				tank.delete = true;
 				
+				WanshotMain.playSound("shellOut.wav");
+				
+				if (tank instanceof Player) {
+					WanshotMain.playSound("openPause.wav");
+				}
 				break;
 			}
 		}
@@ -275,6 +283,8 @@ public class Shell extends Parallelogram {
 					if (shell.tankRef != null) {
 						shell.tankRef.shellShot--;
 					}
+					
+					WanshotMain.playSound("shellOut.wav");
 					break;
 				}
 			}
@@ -320,11 +330,44 @@ public class Shell extends Parallelogram {
 				
 				if (bounced) {
 					this.ricochet++;
-					
+										
 					this.peace = false;
 					
+					//Mark shells for deletion
+					switch (this.speed) {
+						case Shell.REGULAR_SHELL_SPEED:
+							if (this.ricochet >= 2) {
+								this.delete = true;
+								this.tankRef.shellShot--;
+							}
+							break;
+						case Shell.MISSLE_SPEED:
+							if (this.ricochet >= 1) {
+								this.delete = true;
+								this.tankRef.shellShot--;
+							}
+							break;
+						case Shell.ULTRA_MISSLE_SPEED:
+							if (this.ricochet >= 3) {
+								this.delete = true;
+								this.tankRef.shellShot--;
+							}
+							break;
+					}
+					
+					if (this.delete) {
+						WanshotMain.playSound("shellOut.wav");
+						return;
+					}
+					
+					if (this.speed != Shell.ULTRA_MISSLE_SPEED) {
+						WanshotMain.playSound("shellDink.wav");
+					} else {
+						WanshotMain.playSound("ultraMissleDink.wav");
+					}
+					
 					//once a shell hits a tile on one hit, wait till next tick before checking collision again or double collisions could happen
-					break;	
+					return;
 				}
 			}
 		}
@@ -365,28 +408,6 @@ public class Shell extends Parallelogram {
 			if (this.x < 0 || this.x > WanshotModel.WIDTH || this.y < 0 || this.y > WanshotModel.HEIGHT) {
 				this.delete = true;
 				this.tankRef.shellShot--;
-			}
-			
-			//Mark shells for deletion
-			switch (this.speed) {
-				case Shell.REGULAR_SHELL_SPEED:
-					if (this.ricochet >= 2) {
-						this.delete = true;
-						this.tankRef.shellShot--;
-					}
-					break;
-				case Shell.MISSLE_SPEED:
-					if (this.ricochet >= 1) {
-						this.delete = true;
-						this.tankRef.shellShot--;
-					}
-					break;
-				case Shell.ULTRA_MISSLE_SPEED:
-					if (this.ricochet >= 3) {
-						this.delete = true;
-						this.tankRef.shellShot--;
-					}
-					break;
 			}
 		}
 	}

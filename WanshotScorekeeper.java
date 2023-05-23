@@ -194,6 +194,7 @@ public class WanshotScorekeeper {
 	public void startGame() {
 		if (this.shouldUpdate() && !this.slidingUp) {
 			this.slidingUp = true;
+			WanshotMain.playSound("closePause.wav");
 		}
 	}
 	

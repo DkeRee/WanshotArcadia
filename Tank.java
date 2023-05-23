@@ -249,6 +249,13 @@ public class Tank extends Parallelogram {
 			TankParticle tp = new TankParticle((int)this.centerX - TankParticle.side / 2, (int)this.centerY - TankParticle.side / 2, this.color, this.getExplosionType());
 			WanshotModel.particles.add(tp);
 		}
+		
+		WanshotMain.playSound("tankDeath.wav");
+		if (this instanceof Player) {
+			WanshotMain.playSound("playerDeath.wav");
+		} else {
+			WanshotMain.playSound("enemyDeath.wav");
+		}
 	}
 	
 	public int getExplosionType() {

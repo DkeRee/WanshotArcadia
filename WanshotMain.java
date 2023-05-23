@@ -1,7 +1,10 @@
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
+
+import com.sun.tools.javac.Main;
 
 public class WanshotMain {
 	public static void main(String[] args) {
@@ -18,7 +21,25 @@ public class WanshotMain {
         window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
         window.setResizable(false);  
         window.setVisible(true);
-        
+                
 		runner.start();
+	}
+	
+	public static synchronized void playSound(String url) {
+		new Thread(new Runnable() {
+			public void run() {
+				try {
+					AudioInputStream inputStream = AudioSystem.getAudioInputStream(
+						Main.class.getClassLoader().getResource(url)
+					);
+					
+					Clip clip = AudioSystem.getClip();
+					clip.open(inputStream);
+					clip.start();
+				} catch (Exception e) {
+					System.out.println("Someting went wrong...");
+				}
+			}
+		}).start();
 	}
 }
