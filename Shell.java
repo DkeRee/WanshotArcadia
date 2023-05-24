@@ -225,7 +225,7 @@ public class Shell extends Parallelogram {
 	}
 	
 	public boolean bounceTop() {				
-		if (this.vY > 0 ) {
+		if (this.vY > 0) {
 			this.vY *= -1;
 			this.angle *= -1;
 			this.createHit();
@@ -233,6 +233,12 @@ public class Shell extends Parallelogram {
 		}
 		
 		return false;
+	}
+	
+	public void decrementShellTankRef() {
+		if (this.tankRef != null) {
+			this.tankRef.shellShot--;
+		}
 	}
 
 	public void shellWithTank() {
@@ -250,7 +256,7 @@ public class Shell extends Parallelogram {
 			if (super.sat_parallelogram(tank) && !this.peace) {
 				this.delete = true;
 				this.createHit();
-				this.tankRef.shellShot--;
+				this.decrementShellTankRef();
 				
 				tank.createExplosion();
 				tank.delete = true;
@@ -276,13 +282,8 @@ public class Shell extends Parallelogram {
 					this.createHit();
 					shell.createHit();
 					
-					if (this.tankRef != null) {
-						this.tankRef.shellShot--;
-					}
-					
-					if (shell.tankRef != null) {
-						shell.tankRef.shellShot--;
-					}
+					this.decrementShellTankRef();
+					shell.decrementShellTankRef();
 					
 					WanshotMain.playSound("shellOut.wav");
 					break;
@@ -338,19 +339,19 @@ public class Shell extends Parallelogram {
 						case Shell.REGULAR_SHELL_SPEED:
 							if (this.ricochet >= 2) {
 								this.delete = true;
-								this.tankRef.shellShot--;
+								this.decrementShellTankRef();
 							}
 							break;
 						case Shell.MISSLE_SPEED:
 							if (this.ricochet >= 1) {
 								this.delete = true;
-								this.tankRef.shellShot--;
+								this.decrementShellTankRef();
 							}
 							break;
 						case Shell.ULTRA_MISSLE_SPEED:
 							if (this.ricochet >= 3) {
 								this.delete = true;
-								this.tankRef.shellShot--;
+								this.decrementShellTankRef();
 							}
 							break;
 					}
@@ -407,7 +408,7 @@ public class Shell extends Parallelogram {
 			//remove escapees
 			if (this.x < 0 || this.x > WanshotModel.WIDTH || this.y < 0 || this.y > WanshotModel.HEIGHT) {
 				this.delete = true;
-				this.tankRef.shellShot--;
+				this.decrementShellTankRef();
 			}
 		}
 	}
