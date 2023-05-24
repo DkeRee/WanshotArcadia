@@ -15,7 +15,7 @@ public class BlackTank extends Bot {
 	static final double turretRotationSpeed = WanshotModel.degreesToRadians(3);
 	static final double turretArcSize = WanshotModel.degreesToRadians(20);
 	static final int shellType = Shell.MISSLE_SPEED;
-	static final int shellBounceAmount = 1;
+	static final int shellBounceAmount = 0;
 	static final Color color = Color.BLACK;
 	static final Color turretColor = Color.BLACK;
 	static final Color sideColor = Color.decode("#B0896B");
