@@ -4,7 +4,7 @@ public class GreenTank extends Bot {
 	static final int speed = 0;
 	static final double rotationSpeed = 0;
 	static final int stun = 0;
-	static final int shellCap = 3;
+	static final int shellCap = 1;
 	static final int shellCooldown = -10;
 	static final int frm = 0;
 	static final double stopAndTurn = 0;

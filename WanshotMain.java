@@ -35,6 +35,13 @@ public class WanshotMain {
 					
 					Clip clip = AudioSystem.getClip();
 					clip.open(inputStream);
+					
+					if (url.equals("tankMovement.wav")) {
+						FloatControl gainControl = 
+							    (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+							gainControl.setValue(-25.0f);
+					}
+					
 					clip.start();
 				} catch (Exception e) {
 					System.out.println("Someting went wrong...");

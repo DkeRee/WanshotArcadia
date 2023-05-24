@@ -239,6 +239,10 @@ public class Tank extends Parallelogram {
 	public void createTrack() {
 		Track p = new Track((int)this.centerX - Track.WIDTH / 2, (int)this.centerY - Track.HEIGHT, this.angle);
 		WanshotModel.particles.add(p);
+		
+		if (!(this instanceof Player) && !(this instanceof BrownTank) && !(this instanceof GreenTank)) {
+			WanshotMain.playSound("tankMovement.wav");
+		}
 	}
 	
 	public void createExplosion() {

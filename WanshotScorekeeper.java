@@ -21,6 +21,7 @@ public class WanshotScorekeeper {
 	private final int whiteTank = 6;
 	private final int purpleTank = 7;
 	private final int greenTank = 8;
+	private final int blackTank = 9;
 	private int totalScore = 0;
 	
 	private int brownTanksKilled = 0;
@@ -30,6 +31,7 @@ public class WanshotScorekeeper {
 	private int pinkTanksKilled = 0;
 	private int whiteTanksKilled = 0;
 	private int purpleTanksKilled = 0;
+	private int blackTanksKilled = 0;
 	private int greenTanksKilled = 0;
 	
 	public boolean shouldUpdate() {
@@ -46,6 +48,7 @@ public class WanshotScorekeeper {
 		this.whiteTanksKilled = 0;
 		this.purpleTanksKilled = 0;
 		this.greenTanksKilled = 0;
+		this.blackTanksKilled = 0;
 		this.totalScore = 0;
 		this.menuY = -1507;
 		this.droppingDown = true;
@@ -111,6 +114,10 @@ public class WanshotScorekeeper {
 				case GreenTank:
 					this.greenTanksKilled++;
 					this.totalScore += this.greenTank;
+					break;
+				case BlackTank:
+					this.blackTanksKilled++;
+					this.totalScore += this.blackTank;
 					break;
 			}
 		}
@@ -182,13 +189,19 @@ public class WanshotScorekeeper {
 		ctx.drawString("x " + this.greenTanksKilled, this.menuX + 250, this.menuY + 465);
 		ctx.fill(green);
 		
+		Rectangle black = new Rectangle(this.menuX + 190, this.menuY + 480, 35, 30);
+		ctx.setColor(BlackTank.color);
+		
+		ctx.drawString("x " + this.blackTanksKilled, this.menuX + 250, this.menuY + 505);
+		ctx.fill(black);
+		
 	    font = new Font("monospace", Font.PLAIN, 50);
 	    ctx.setFont(font);
 	    ctx.setColor(Color.decode("#ffaa2e"));
-		ctx.drawString("PRESS", this.menuX + 355, this.menuY + 280);
-		ctx.drawString("ENTER", this.menuX + 355, this.menuY + 360);
+		ctx.drawString("PRESS", this.menuX + 355, this.menuY + 300);
+		ctx.drawString("ENTER", this.menuX + 355, this.menuY + 380);
 		
-		ctx.drawString("Total Score: " + this.totalScore, this.menuX + 200, this.menuY + 540);
+		ctx.drawString("Total Score: " + this.totalScore, this.menuX + 200, this.menuY + 580);
 	}
 	
 	public void startGame() {

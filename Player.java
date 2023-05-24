@@ -92,6 +92,10 @@ public class Player extends Tank {
 	
 	public void update() {
 		//update based only x/y coords + rotation based off of input
+		if ((W || S) && super.trackCooldownCount == 0) {
+			WanshotMain.playSound("tankMovement.wav");
+		}
+		
 		if (W) {
 			super.x += super.xInc;
 			super.y += super.yInc;

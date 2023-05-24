@@ -8,7 +8,8 @@ enum TankTypes {
 	PinkTank,
 	WhiteTank,
 	PurpleTank,
-	GreenTank
+	GreenTank,
+	BlackTank
 }
 
 class SpawnParticle extends Particle {
@@ -95,6 +96,9 @@ class TankCache {
 			case GreenTank:
 				color = GreenTank.color;
 				break;
+			case BlackTank:
+				color = BlackTank.color;
+				break;
 		}
 		
 		for (int i = 0; i < 5; i++) {
@@ -117,7 +121,7 @@ public class WanshotManager {
 	private int level = 0;
 	private int waveCap = 5;
 	private int wave = 0;
-	private int enemiesCap = 6;
+	private int enemiesCap = 5;
 	private boolean unloading = false;
 	private int unloadCounter = 0;
 	private int unloadSpeed;
@@ -242,7 +246,7 @@ public class WanshotManager {
 			tanksToChoose[4] = TankTypes.PinkTank;
 			tanksToChoose[5] = TankTypes.WhiteTank;
 			tanksToChoose[6] = TankTypes.PurpleTank;
-		} else {
+		} else if (this.level <= 10) {
 			tanksToChoose = new TankTypes[8];
 			tanksToChoose[0] = TankTypes.BrownTank;
 			tanksToChoose[1] = TankTypes.GreyTank;
@@ -252,6 +256,17 @@ public class WanshotManager {
 			tanksToChoose[5] = TankTypes.WhiteTank;
 			tanksToChoose[6] = TankTypes.PurpleTank;
 			tanksToChoose[7] = TankTypes.GreenTank;	
+		} else {
+			tanksToChoose = new TankTypes[9];
+			tanksToChoose[0] = TankTypes.BrownTank;
+			tanksToChoose[1] = TankTypes.GreyTank;
+			tanksToChoose[2] = TankTypes.YellowTank;
+			tanksToChoose[3] = TankTypes.TealTank;
+			tanksToChoose[4] = TankTypes.PinkTank;
+			tanksToChoose[5] = TankTypes.WhiteTank;
+			tanksToChoose[6] = TankTypes.PurpleTank;
+			tanksToChoose[7] = TankTypes.GreenTank;
+			tanksToChoose[8] = TankTypes.BlackTank;
 		}
 		
 		return new TankCache(tanksToChoose[(int)(Math.random() * tanksToChoose.length)], randomPoint);
@@ -287,6 +302,8 @@ public class WanshotManager {
 			case GreenTank:
 				tank = new GreenTank((int)coords.x, (int)coords.y);
 				break;
+			case BlackTank:
+				tank = new BlackTank((int)coords.x, (int)coords.y);
 		}
 		
 		cache.createSpawnParticles();
@@ -314,12 +331,24 @@ public class WanshotManager {
 	}
 	
 	public int getMaxWaves() {
-		return Math.min((int)(Math.random() * this.level) + 1, this.waveCap);
+		int waveMin = 1;
+		
+		if (this.level > 5) {
+			waveMin = 3;
+		}
+		
+		return Math.min(((int)(Math.random() * this.level) - (waveMin - 1)) + waveMin, this.waveCap);
 	}
 	
 	public int getMaxWaveEnemies(int waveCount) {
+		int enemyMin = 1;
 		int levelOffset = (this.level) + (waveCount);
-		return Math.min((int)(Math.random() * levelOffset) + 1, this.enemiesCap);
+		
+		if (this.level > 5) {
+			enemyMin = 3;
+		}
+		
+		return Math.min(((int)(Math.random() * levelOffset) - (enemyMin - 1)) + enemyMin, this.enemiesCap);
 	}
 	
 	public int getLevel() {
