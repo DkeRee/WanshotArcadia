@@ -3,7 +3,7 @@ public class WanshotRunner {
 	private WanshotModel model = new WanshotModel();
 	private WanshotController controller;
 	private WanshotView view = new WanshotView(this.model);
-	
+		
 	public WanshotRunner() {
 		this.controller = new WanshotController(this.model);
 		this.view.setFocusable(true);

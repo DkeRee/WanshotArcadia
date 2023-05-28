@@ -82,6 +82,6 @@ public class WanshotView extends JPanel {
 		
 		if (this.model.getScoreKeeper().shouldUpdate()) {
 			this.model.getScoreKeeper().render(ctx);
-		}
+		}		
 	}
 }

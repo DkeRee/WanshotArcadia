@@ -129,8 +129,10 @@ public class WanshotManager {
 	private int distImmunity = 430;
 	private TankCache[][] levelList;
 	private TankCache[] prevWave;
+	private TankTypes[] tanksToChoose = null;
 	
 	public WanshotManager(WanshotScorekeeper scoreKeeper) {
+		this.updateTankChooser();
 		this.scoreKeeper = scoreKeeper;
 		this.levelList = this.populateLevelList();
 	}
@@ -151,59 +153,7 @@ public class WanshotManager {
 		return list;
 	}
 	
-	public void update() {
-		if (WanshotModel.isPlayerAlive()) {
-			if (WanshotModel.onlyPlayerAlive() && !this.unloading) {
-				//update score by end of each wave						
-				if (this.prevWave != null) {
-					this.scoreKeeper.updateKills(this.prevWave);
-				}
-				
-				this.prevWave = this.levelList[this.wave].clone();
-				this.unloading = true;
-				this.unloadSpeed = this.getUnloadSpeed();
-				
-				WanshotMain.playSound("newRound.wav");
-			}
-			
-			if (this.unloading) {
-				if (this.unloadCounter < 0) {
-					this.unloadCounter++;
-				} else {
-					this.unloadCounter = this.unloadSpeed;
-					
-					TankCache[] levelWave = this.levelList[this.wave];
-					
-					//upload tank and do all the specifics
-					TankCache cache = levelWave[this.loaderInd];
-					
-					//upload tank cache into game
-					this.readTankCache(cache);
-					this.loaderInd++;
-					
-					//we have reached the end of this wave, go onto the next wave and move onto the next wave once player clears this one
-					if (this.loaderInd == levelWave.length) {
-						this.wave++;
-						this.unloading = false;
-						this.loaderInd = 0;						
-					}
-					
-					//we have reached the end of this level, go onto the next level
-					if (this.wave == this.levelList.length) {
-						this.wave = 0;
-						this.level++;
-						this.levelList = this.populateLevelList();
-					}
-				}
-			}	
-		}
-	}
-	
-	public TankCache createTank() {
-		//creates tank based off of current level
-		TankTypes[] tanksToChoose = null;
-		Point randomPoint = this.getRandomCoords();
-		
+	public void updateTankChooser() {
 		if (this.level < 3) {
 			tanksToChoose = new TankTypes[1];
 			tanksToChoose[0] = TankTypes.BrownTank;
@@ -268,8 +218,63 @@ public class WanshotManager {
 			tanksToChoose[7] = TankTypes.GreenTank;
 			tanksToChoose[8] = TankTypes.BlackTank;
 		}
+	}
+	
+	public void update() {
+		if (WanshotModel.isPlayerAlive()) {
+			if (WanshotModel.onlyPlayerAlive() && !this.unloading) {
+				//update score by end of each wave						
+				if (this.prevWave != null) {
+					this.scoreKeeper.updateKills(this.prevWave);
+				}
+				
+				this.prevWave = this.levelList[this.wave].clone();
+				this.unloading = true;
+				this.unloadSpeed = this.getUnloadSpeed();
+				
+				this.updateTankChooser();
+				
+				WanshotMain.playSound("newRound.wav");
+			}
+			
+			if (this.unloading) {
+				if (this.unloadCounter < 0) {
+					this.unloadCounter++;
+				} else {
+					this.unloadCounter = this.unloadSpeed;
+					
+					TankCache[] levelWave = this.levelList[this.wave];
+					
+					//upload tank and do all the specifics
+					TankCache cache = levelWave[this.loaderInd];
+					
+					//upload tank cache into game
+					this.readTankCache(cache);
+					this.loaderInd++;
+					
+					//we have reached the end of this wave, go onto the next wave and move onto the next wave once player clears this one
+					if (this.loaderInd == levelWave.length) {
+						this.wave++;
+						this.unloading = false;
+						this.loaderInd = 0;						
+					}
+					
+					//we have reached the end of this level, go onto the next level
+					if (this.wave == this.levelList.length) {
+						this.wave = 0;
+						this.level++;
+						this.levelList = this.populateLevelList();
+					}
+				}
+			}	
+		}
+	}
+	
+	public TankCache createTank() {
+		//creates tank based off of current level
+		Point randomPoint = this.getRandomCoords();
 		
-		return new TankCache(tanksToChoose[(int)(Math.random() * tanksToChoose.length)], randomPoint);
+		return new TankCache(this.tanksToChoose[(int)(Math.random() * this.tanksToChoose.length)], randomPoint);
 	}
 	
 	public void readTankCache(TankCache cache) {
