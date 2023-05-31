@@ -68,12 +68,12 @@ public class WanshotView extends JPanel {
 			}
 		}
 		
-		for (int i = 0; i < WanshotModel.tanks.size(); i++) {
-			WanshotModel.tanks.get(i).render(ctx);
-		}
-		
 		for (int i = 0; i < WanshotModel.shells.size(); i++) {
 			WanshotModel.shells.get(i).render(ctx);
+		}
+		
+		for (int i = 0; i < WanshotModel.tanks.size(); i++) {
+			WanshotModel.tanks.get(i).render(ctx);
 		}
 				
 		for (int i = 0; i < WanshotModel.tiles.size(); i++) {
