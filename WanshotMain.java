@@ -8,7 +8,7 @@ import com.sun.tools.javac.Main;
 
 public class WanshotMain {
 	public static void main(String[] args) {
-		JFrame window = new JFrame("Wanshot");
+		JFrame window = new JFrame("Wanshot V9");
 		WanshotRunner runner = new WanshotRunner();
 		
         window.setContentPane(runner.getView());

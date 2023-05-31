@@ -96,7 +96,7 @@ public class Parallelogram {
 		int distanceY = vy - cy;
 		double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 	
-		double angleToVertex = Math.atan2(distanceY, distanceX);
+		double angleToVertex = Parallelogram.betterAtan2(distanceY, distanceX);
 		
 		double rotatedVertexX = cx + distance * Math.cos(angleToVertex - rotatedAngle);
 		double rotatedVertexY = cy + distance * Math.sin(angleToVertex - rotatedAngle);
@@ -111,6 +111,15 @@ public class Parallelogram {
 	
 	static double getMagnitude(Point vector) {
 		return Math.sqrt(vector.x * vector.x + vector.y * vector.y);
+	}
+	
+	static double betterAtan2(double y, double x) {
+		double angle = Math.atan2(y, x);
+		if (angle < 0) {
+			angle = 2 * Math.PI - Math.abs(angle);
+		}
+		
+		return angle;
 	}
 	
 	static void normalizeVector(Point vector) {
