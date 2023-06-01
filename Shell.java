@@ -376,7 +376,7 @@ public class Shell extends Parallelogram {
 	
 	public void update() {
 		if (WanshotModel.isPlayerAlive()) {
-			super.update((int)this.x, (int)this.y, this.angle);
+			super.update(this.x, this.y, this.angle);
 			this.x += this.vX;
 			this.y += this.vY;
 			

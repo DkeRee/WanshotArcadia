@@ -292,7 +292,7 @@ public class Tank extends Parallelogram {
 	}
 	
 	public void update() {
-		super.update((int)this.x, (int)this.y, this.angle);
+		super.update(this.x, this.y, this.angle);
 								
 		if (this.shellCooldownCount < 0) {
 			this.shellCooldownCount++;

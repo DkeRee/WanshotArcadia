@@ -9,20 +9,20 @@ public class Parallelogram {
 	final int BOTTOM_LEFT = 2;
 	final int BOTTOM_RIGHT = 3;
 	
-	private int x;
-	private int y;
+	private double x;
+	private double y;
 	private int width;
 	private int height;
 	private double rotation;
-	private int centerX;
-	private int centerY;
+	private double centerX;
+	private double centerY;
 	
 	private double collisionDepth = 0;
 	private Point normal = null;
 	
 	public Parallelogram(
-				int x,
-				int y, 
+				double x,
+				double y, 
 				int width,
 				int height,
 				double rotation
@@ -85,15 +85,15 @@ public class Parallelogram {
 	}
 	
 	static Point getVertex(
-				int cx,
-				int cy,
-				int vx,
-				int vy,
+				double cx,
+				double cy,
+				double vx,
+				double vy,
 				double rotatedAngle
 			) {
 		//get distance from center to specified vertex
-		int distanceX = vx - cx;
-		int distanceY = vy - cy;
+		double distanceX = vx - cx;
+		double distanceY = vy - cy;
 		double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 	
 		double angleToVertex = Parallelogram.betterAtan2(distanceY, distanceX);
@@ -148,7 +148,7 @@ public class Parallelogram {
 		return this.normal;
 	}
 	
-	public void update(int x, int y, double rotation) {
+	public void update(double x, double y, double rotation) {
 		this.x = x;
 		this.y = y;
 		this.rotation = rotation;
