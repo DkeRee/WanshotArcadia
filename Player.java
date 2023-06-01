@@ -1,5 +1,43 @@
 import java.awt.*;
 
+class P extends Particle {
+	int x;
+	int y;
+	double angle;
+	int radius = 15;
+	int opacity = 256;
+	Color color = Color.decode("#FEE75C");
+	int speed = 600;
+	
+	public P(int x, int y, double angle) {
+		this.x = x;
+		this.y = y;
+		this.angle = angle + (Math.random() > 0.5 ? (Math.random() * WanshotModel.degreesToRadians(20)) : -(Math.random() * WanshotModel.degreesToRadians(20)));
+	}
+	
+	public void update() {
+		this.x += this.speed * Math.cos(this.angle) * WanshotModel.deltaTime;
+		this.y += this.speed * Math.sin(this.angle) * WanshotModel.deltaTime;
+		this.opacity -= 300 * WanshotModel.deltaTime;
+		
+		if (this.speed - 40 >= 0) {
+			this.speed -= 40;
+		}
+		
+		if (this.opacity <= 0) {
+			super.delete = true;
+			return;
+		}
+		
+		this.color = new Color(this.color.getRed(), this.color.getGreen(), this.color.getBlue(), this.opacity);
+	}
+	
+	public void render(Graphics2D ctx) {
+		ctx.setColor(this.color);
+		ctx.fillOval(this.x, this.y, this.radius, this.radius);
+	}
+}
+
 class Exhaust extends Particle {
 	Color[] possibleColors = {Color.decode("#ED4245"), Color.decode("#FFA500"), Color.decode("#FFBF00")};	
 	
@@ -49,6 +87,10 @@ public class Player extends Tank {
 	private boolean A = false;
 	private boolean S = false;
 	private boolean D = false;
+	private boolean P = false;
+	
+	private int PDelay = -2;
+	private int PCounter = 0;
 	
 	private int exhaustDelay = -3;
 	private int exhaustDelayCount = 0;	
@@ -96,6 +138,17 @@ public class Player extends Tank {
 			WanshotMain.playSound("tankMovement.wav");
 		}
 		
+		if (P) {
+			if (this.PCounter < 0) {
+				this.PCounter++;
+			} else {
+				this.PCounter = this.PDelay;
+				
+				P p = new P((int)this.centerX - 7, (int)this.centerY - 7, super.angle);
+				WanshotModel.particles.add(p);
+			}
+		}
+		
 		if (W) {
 			super.x += super.xInc;
 			super.y += super.yInc;
@@ -136,6 +189,9 @@ public class Player extends Tank {
 				break;
 			case WanshotController.D:
 				D = change;
+				break;
+			case WanshotController.P:
+				P = change;
 				break;
 		}
 	}

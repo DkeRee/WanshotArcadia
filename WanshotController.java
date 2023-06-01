@@ -6,6 +6,7 @@ public class WanshotController implements MouseListener, MouseMotionListener, Ke
 	static final int A = 65;
 	static final int S = 83;
 	static final int D = 68;
+	static final int P = 80;
 	
 	private WanshotModel model;
 	

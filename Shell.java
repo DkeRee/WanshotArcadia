@@ -431,6 +431,8 @@ public class Shell extends Parallelogram {
 		if (this.speed == Shell.REGULAR_SHELL_SPEED) {
 			ctx.setStroke(new BasicStroke(3));
 			ctx.setColor(WanshotView.SHADOW);
+		} else {
+			ctx.setColor(this.color);
 		}
 		
 		ctx.draw(body);
