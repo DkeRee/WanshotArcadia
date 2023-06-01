@@ -281,7 +281,11 @@ public class Bot extends Tank {
 	
 	public void findNewTurretRot() {
 		Tank player = WanshotModel.tanks.get(0);
-		double angleToPlayer = Parallelogram.betterAtan2(super.centerY - player.centerY, super.centerX - player.centerX) - Math.PI;
+		double angleToPlayer = Math.atan2(super.centerY - player.centerY, super.centerX - player.centerX) - Math.PI;
+		
+		if (angleToPlayer < 0) {
+			angleToPlayer = 2 * Math.PI - Math.abs(angleToPlayer);
+		}
 				
 		double randOffset = Math.random() * this.turretArcSize;
 		angleToPlayer += Math.random() > 0.5 ? randOffset : -randOffset;
@@ -294,7 +298,7 @@ public class Bot extends Tank {
 	public void moveTurret() {		
 		double diff = this.targetTurretRot - super.turretAngle;
 		double diffOther = 2 * Math.PI - diff;
-						
+								
 		if (diff >= 0) {
 			if (diff < diffOther) {
 				//+
