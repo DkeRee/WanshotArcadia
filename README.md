@@ -1,6 +1,6 @@
 PLEASE READ THIS SECTION
 ------------------------
-100027886 ITS MEEEEE I AM NOT PLAGARIZING DANIEL NATHAN KE
+100027886 DK
 
 The control for Wanshot is rather controversial. Many folks prefer the common WASD movement, but I feel that the movement I have installed for Wanshot gives the game more depth and uniqueness, as it is closer to what controlling a tank actually feels like. Like the typical WASD controls, W moves forward and S moves backwards, but the A and D keys are where it differs. Pressing D will rotate the tank clockwise and pressing A will rotate the tank counterclockwise. The body of the tank will determine where the front and back of the tank is, so when pressing W and S they will follow the angle that the tank has been rotated to. I have added exhaust particles at the back end of the tank to help differentiate where the front and back of the tank is.
 
